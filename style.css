@@ -1,11 +1,12 @@
 :root {
-  --header-green:#34eb43;
+  --header-green:#D1E231;
+  --background-color: #F9FBE4;
 }
 
 body {
   font-family: Roboto, Helvetica, sans-serif;
   margin: 0;
-  background-color: #eee;
+  background-color: var(--background-color);
 }
 
 a {
@@ -97,12 +98,12 @@ a:focus {
 }
 
 .pear-container {
-  margin: 50px 10%;
+  margin: 15px 5%;
   display: flex;
   flex-wrap: wrap;
 }
 
-pear {
+.pear {
   flex: 0 1 28%;
   display: flex;
   margin: 2px;
@@ -110,6 +111,7 @@ pear {
   border: 1px solid #dadada;
   border-radius: 2px;
   background-color: #fff;
+  /* align-items: center; */
 }
 
 pear-icon {
@@ -117,7 +119,7 @@ pear-icon {
 }
 
 pear-content {
-  flex: 1 1 80%;
+  flex: 1 10 80%;
   margin-left: 10px;
 }
 
@@ -171,7 +173,7 @@ pear-content pear-attribution {
   background-color: rgba(0, 0, 0, 0.85);
 }
 
-#create-twit-modal {
+#create-pear-modal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -290,4 +292,8 @@ pear-input-element textarea {
   margin: 10px 0;
   font-size: 36px;
   font-weight: 400;
+}
+
+.icon-attribution {
+  font-size: 5;
 }
