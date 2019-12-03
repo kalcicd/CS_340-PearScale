@@ -40,11 +40,11 @@ app.get('/fresh', middlewareConnect, async (req, res) => {
   req.db = undefined;
 });
 
-app.get('/top', middlewareConnect, async (req, res) =>{
+app.get('/ripe', middlewareConnect, async (req, res) =>{
   console.log('== Got request for top pears');
-  const topPears = await getTopPears(req.db);
+  const ripePears = await getTopPears(req.db);
 
-  console.log('topPears:', topPears);
+  console.log('ripePears:', ripePears);
   res.render('home');
   close(req.db);
   req.db = undefined;

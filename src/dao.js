@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const {connectDb, close} = require('./connection');
 
 const testPear = {
@@ -22,8 +23,7 @@ const testUser = {
  */
 const createAccount = async (connection, userInfo) => { // lol plaintext passwords
     return await new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Users (Username, Password, Birthday, Email) ' +
-            'VALUES (?)';
+        const sql = 'INSERT INTO Users (Username, Password, Birthday, Email) VALUES (?)';
         const bindVars = [[userInfo.username, userInfo.password, userInfo.birthday, userInfo.email]];
         connection.query(sql, bindVars, (err, result) => {
             if (err) {
@@ -42,7 +42,8 @@ const createAccount = async (connection, userInfo) => { // lol plaintext passwor
  * @param userInfo An object containing the user's login info
  * @returns {Promise<any>} resolves a boolean representing whether or not user successfully logged in.
  */
-const logIn = async (connection, userInfo) => {};
+const logIn = async (connection, userInfo) => {
+};
 
 /**
  * @name ratePear
@@ -53,7 +54,7 @@ const logIn = async (connection, userInfo) => {};
  */
 const ratePear = async (connection, UID, PID, rating) => {
     const rated = await new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM Ratings WHERE PID = ? AND UID = ?';
+        const sql = 'SELECT * FROM Ratings WHERE (PID = ? AND UID = ?)';
         const sqlBinds = [PID, UID];
         connection.query(sql, sqlBinds, (err, result) => {
             if (err) {
@@ -63,10 +64,33 @@ const ratePear = async (connection, UID, PID, rating) => {
             }
         });
     });
-    if (rated) {
-
+    const sqlBinds = [rating, PID, UID];
+    console.log('rated:', rated);
+    if (!_.isEmpty(rated)) {
+        return await new Promise((resolve, reject) => {
+            const sql = 'UPDATE Ratings SET Score = ? WHERE (PID = ? AND UID = ?)';
+            connection.query(sql, sqlBinds, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log('== Rating updated');
+                    resolve(result);
+                }
+            });
+        });
     } else {
-
+        return await new Promise((resolve, reject) => {
+            const sql = `INSERT INTO Ratings (Score, PID, UID) VALUES (?)`;
+            const sqlBinds = [rating, PID, UID];
+            connection.query(sql, [sqlBinds], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log('== New rating added');
+                    resolve(result);
+                }
+            });
+        });
     }
 }; // make sure to check if pear has already been rated by user
 
@@ -76,7 +100,8 @@ const ratePear = async (connection, UID, PID, rating) => {
  * @param PID The PID of the pear
  * @returns {Promise<any>} resolves the average rating of pear
  */
-const getAverageRating = async (connection, PID) => {};
+const getAverageRating = async (connection, PID) => {
+};
 
 /**
  * @name searchPears
@@ -120,11 +145,11 @@ const getFreshPears = async (connection) => {
 };
 
 /**
- * @name getTopPears
+ * @name getRipePears
  * @param connection An open connection object
  * @returns {Promise<any>} returns a promise object that resolves with an array of top rated pears
  */
-const getTopPears = async (connection) => {
+const getRipePears = async (connection) => {
     return await new Promise((resolve, reject) => {
         const sql = `SELECT * FROM highestRatedPears`;
         connection.query(sql, (err, result) => {
@@ -171,7 +196,7 @@ const createPear = async (connection, attributes) => {
 
 const conn = connectDb();
 const asyncTest = async () => {
-    const result = await ratePear(conn, 1, 5, 5);
+    const result = await ratePear(conn, 1, 5, 6);
     console.log('result:', result);
     close(conn);
 
@@ -183,7 +208,7 @@ asyncTest().catch((error) => {
 
 module.exports = {
     createPear,
-    getTopPears,
+    getTopPears: getRipePears,
     getFreshPears,
     searchPears,
     createAccount,
