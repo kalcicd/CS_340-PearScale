@@ -1,10 +1,103 @@
 const {connectDb, close} = require('./connection');
 
-const testAttributes = {
+const testPear = {
     UID: 3,
-    Title: 'Test Title',
-    Description: 'Test Description',
-    Image: 'fake-url.com',
+    title: 'Test Title',
+    description: 'Test Description',
+    image: 'fake-url.com',
+};
+
+const testUser = {
+    username: 'Foo',
+    password: 'password',
+    birthday: '2011-10-10',
+    email: 'user@gmail.com',
+};
+
+/**
+ * @name createAccount
+ * @param connection An open connection object
+ * @param userInfo An object containing user data
+ * @returns {Promise<any>} resolves a confirmation or denial that user account was created
+ */
+const createAccount = async (connection, userInfo) => { // lol plaintext passwords
+    return await new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Users (Username, Password, Birthday, Email) ' +
+            'VALUES (?)';
+        const bindVars = [[userInfo.username, userInfo.password, userInfo.birthday, userInfo.email]];
+        connection.query(sql, bindVars, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== row inserted with UID = ${result.insertId}`);
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
+ * @name logIn
+ * @param connection An open connection object
+ * @param userInfo An object containing the user's login info
+ * @returns {Promise<any>} resolves a boolean representing whether or not user successfully logged in.
+ */
+const logIn = async (connection, userInfo) => {};
+
+/**
+ * @name ratePear
+ * @param connection An open connection object
+ * @param UID The UID of the user rating the pear
+ * @param PID The PID of the pear to be rated
+ * @param rating A numeric rating of the pear
+ */
+const ratePear = async (connection, UID, PID, rating) => {
+    const rated = await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Ratings WHERE PID = ? AND UID = ?';
+        const sqlBinds = [PID, UID];
+        connection.query(sql, sqlBinds, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+    if (rated) {
+
+    } else {
+
+    }
+}; // make sure to check if pear has already been rated by user
+
+/**
+ * @name getAverageRating
+ * @param connection An open connection object
+ * @param PID The PID of the pear
+ * @returns {Promise<any>} resolves the average rating of pear
+ */
+const getAverageRating = async (connection, PID) => {};
+
+/**
+ * @name searchPears
+ * @param connection An open connection object
+ * @param search A search query
+ * @returns {Promise<any>} returns a promise object that resolves with an array of newest pears
+ */
+const searchPears = async (connection, search) => {
+    return await new Promise((resolve, reject) => {
+        const sanitized = search.toLowerCase();
+        const sql = `SELECT PID, UID, Title, Description, Image, Date, Time
+        FROM (SELECT * FROM pearTags WHERE Tag LIKE '%${sanitized}%') as swag`;
+        connection.query(sql, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== Getting Pears with tags containing '${sanitized}'`);
+                resolve(result);
+            }
+        });
+    });
 };
 
 /**
@@ -19,7 +112,7 @@ const getFreshPears = async (connection) => {
             if (err) {
                 reject(err);
             } else {
-                console.log('== Getting Top Pears');
+                console.log('== Getting Fresh Pears');
                 resolve(result);
             }
         })
@@ -38,7 +131,7 @@ const getTopPears = async (connection) => {
             if (err) {
                 reject(err);
             } else {
-                console.log('== Getting Fresh Pears');
+                console.log('== Getting Top Pears');
                 resolve(result);
             }
         });
@@ -55,7 +148,8 @@ const createPear = async (connection, attributes) => {
     const {insertId} = await new Promise((resolve, reject) => {
         const sql = 'INSERT INTO Pears (UID, Title, Description, Image, Date, Time) ' +
             'VALUES (?, CURRENT_DATE(), CURRENT_TIME())';
-        connection.query(sql, [Object.values(attributes)], (err, result) => {
+        const bindVars = [[attributes.UID, attributes.title, attributes.description, attributes.image]];
+        connection.query(sql, bindVars, (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -75,14 +169,15 @@ const createPear = async (connection, attributes) => {
     });
 };
 
+const conn = connectDb();
 const asyncTest = async () => {
-    const conn = connectDb();
-    const newPear = await getFreshPears(conn);
-    console.log('newPear:', newPear);
+    const result = await ratePear(conn, 1, 5, 5);
+    console.log('result:', result);
     close(conn);
 
 };
-asyncTest().then().catch((error) => {
+asyncTest().catch((error) => {
+    close(conn);
     console.log(error);
 });
 
@@ -90,5 +185,10 @@ module.exports = {
     createPear,
     getTopPears,
     getFreshPears,
+    searchPears,
+    createAccount,
+    logIn,
+    ratePear,
+    getAverageRating,
 };
 

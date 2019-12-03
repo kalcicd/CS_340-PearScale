@@ -24,6 +24,7 @@ app.use(express.static(path.join(path.basename(__dirname), 'public')));
 app.get('/', middlewareConnect, async (req, res) => {
   console.log('== Got request for the home page');
   const freshPears = await getFreshPears(req.db);
+  console.log('fresh:', freshPears);
   res.render('home', freshPears);
 
   close(req.db);
@@ -42,6 +43,7 @@ app.get('/fresh', middlewareConnect, async (req, res) => {
 app.get('/top', middlewareConnect, async (req, res) =>{
   console.log('== Got request for top pears');
   const topPears = await getTopPears(req.db);
+
   console.log('topPears:', topPears);
   res.render('home');
   close(req.db);
@@ -49,7 +51,7 @@ app.get('/top', middlewareConnect, async (req, res) =>{
 });
 
 app.get('*', async (req, res) => {
-  res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() when you make it, Zach
+  res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() or .render() when you make it, Zach
 });
 
 
