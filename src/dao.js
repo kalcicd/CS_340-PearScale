@@ -10,7 +10,7 @@ const testPear = {
 
 const testUser = {
     username: 'Foo',
-    password: 'password',
+    password: 'wrongpassword',
     birthday: '2011-10-10',
     email: 'user@gmail.com',
 };
@@ -40,9 +40,20 @@ const createAccount = async (connection, userInfo) => { // lol plaintext passwor
  * @name logIn
  * @param connection An open connection object
  * @param userInfo An object containing the user's login info
- * @returns {Promise<any>} resolves a boolean representing whether or not user successfully logged in.
+ * @returns {Promise<any>} resolves object of logged in user, undefined if incorrect login
  */
 const logIn = async (connection, userInfo) => {
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Users WHERE (Username = ? AND Password = ?)';
+        const sqlBinds = [userInfo.username, userInfo.password];
+        connection.query(sql, sqlBinds, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result[0]);
+            }
+        });
+    });
 };
 
 /**
@@ -101,6 +112,16 @@ const ratePear = async (connection, UID, PID, rating) => {
  * @returns {Promise<any>} resolves the average rating of pear
  */
 const getAverageRating = async (connection, PID) => {
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT AVG(Score) AS average FROM Ratings WHERE PID = ?';
+        connection.query(sql, [PID], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result[0].average);
+            }
+        })
+    });
 };
 
 /**
@@ -196,7 +217,7 @@ const createPear = async (connection, attributes) => {
 
 const conn = connectDb();
 const asyncTest = async () => {
-    const result = await ratePear(conn, 1, 5, 6);
+    const result = await logIn(conn, testUser);
     console.log('result:', result);
     close(conn);
 
@@ -208,7 +229,7 @@ asyncTest().catch((error) => {
 
 module.exports = {
     createPear,
-    getTopPears: getRipePears,
+    getRipePears,
     getFreshPears,
     searchPears,
     createAccount,

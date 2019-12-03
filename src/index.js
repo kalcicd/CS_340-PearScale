@@ -2,7 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
-const {getTopPears, getFreshPears} = require('./dao');
+const {getRipePears, getFreshPears} = require('./dao');
 const {middlewareConnect, close} = require('./connection');
 
 const app = express();
@@ -41,10 +41,8 @@ app.get('/fresh', middlewareConnect, async (req, res) => {
 });
 
 app.get('/ripe', middlewareConnect, async (req, res) =>{
-  console.log('== Got request for top pears');
-  const ripePears = await getTopPears(req.db);
-
-  console.log('ripePears:', ripePears);
+  console.log('== Got request for ripe pears');
+  const ripePears = await getRipePears(req.db);
   res.render('home');
   close(req.db);
   req.db = undefined;
