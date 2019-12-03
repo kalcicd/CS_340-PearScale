@@ -69,9 +69,9 @@ function close(req) {
 
 /**
  * Capture the port configuration for the server. We use the PORT environment
- * variable's value, but if it is not set, we will default to port 3000.
+ * variable's value, but if it is not set, we will default to port 6969.
  */
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 6969;
 
 /**
  * Start the server.

@@ -3,8 +3,11 @@
   --background-color: #F9FBE4;
 }
 
+header {
+  background-color: var(--header-green);
+}
+
 body {
-  font-family: Roboto, Helvetica, sans-serif;
   margin: 0;
   background-color: var(--background-color);
 }
