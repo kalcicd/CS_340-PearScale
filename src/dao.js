@@ -1,12 +1,3 @@
-const mysql = require('mysql');
-const config = require('./config');
-
-const connectDb = () => {
-    const connection = mysql.createConnection(config);
-    connection.connect();
-    return connection;
-};
-
 const testAttributes = {
     UID: 3,
     Title: 'Test Title',
@@ -16,12 +7,11 @@ const testAttributes = {
 
 /**
  * @name createPear Inserts a pear into the DB
+ * @param connection An open connection object
  * @param attributes An object
  * @returns {Promise<any>} returns a promise object that resolves with newly inserted row
  */
-const createPear = async (attributes) => {
-    const connection = await connectDb();
-    console.log(connection);
+const createPear = async (connection, attributes) => {
     const {insertId} = await new Promise((resolve, reject) => {
         const sql = 'INSERT INTO Pears (UID, Title, Description, Image, Date, Time) ' +
             'VALUES (?, CURRENT_DATE(), CURRENT_TIME())';
@@ -39,8 +29,6 @@ const createPear = async (attributes) => {
             if (err) {
                 reject(err);
             } else {
-                connection.end();
-                // console.log('result', result[0]);
                 resolve(result[0]);
             }
         });
@@ -54,3 +42,7 @@ const asyncTest = async () => {
 asyncTest().then().catch((error) => {
     console.log(error);
 });
+
+module.exports = {
+    createPear,
+};
