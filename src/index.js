@@ -1,14 +1,9 @@
-/**
- * Node.js Web Application Template
- * 
- * The code below serves as a starting point for anyone wanting to build a
- * website using Node.js, Express, Handlebars, and MySQL. You can also use
- * Forever to run your service as a background process.
- */
 const express = require('express');
 const exphbs = require('express-handlebars');
-const mysql = require('mysql');
 const path = require('path');
+
+const {getTopPears, getFreshPears} = require('./dao');
+const {middlewareConnect, close} = require('./connection');
 
 const app = express();
 
@@ -26,46 +21,37 @@ app.set('views', path.join(path.basename(__dirname), 'views'));
 // Setup static content serving
 app.use(express.static(path.join(path.basename(__dirname), 'public')));
 
-/**
- * Create a database connection. This is our middleware function that will
- * initialize a new connection to our MySQL database on every request.
- */
-const config = require('./config');
-function connectDb(req, res, next) {
-  console.log('Connecting to the database');
-  let connection = mysql.createConnection(config);
-  connection.connect();
-  req.db = connection;
-  console.log('Database connected');
-  next();
-}
+app.get('/', middlewareConnect, async (req, res) => {
+  console.log('== Got request for the home page');
+  const freshPears = await getFreshPears(req.db);
+  res.render('home', freshPears);
 
-/**
- * This is the handler for our main page. The middleware pipeline includes
- * our custom `connectDb()` function that creates our database connection and
- * exposes it as `req.db`.
- */
-app.get('/', connectDb, function(req, res) {
-  console.log('Got request for the home page');
-
-  res.render('home');
-
-  close(req);
+  close(req.db);
+  req.db = undefined;
 });
 
-/**
- * Handle all of the resources we need to clean up. In this case, we just need 
- * to close the database connection.
- * 
- * @param {Express.Request} req the request object passed to our middleware
- */
-function close(req) {
-  if (req.db) {
-    req.db.end();
-    req.db = undefined;
-    console.log('Database connection closed');
-  }
-}
+app.get('/fresh', middlewareConnect, async (req, res) => {
+  console.log('== Got request for the fresh page');
+  const freshPears = await getFreshPears(req.db);
+  res.render('home', freshPears);
+
+  close(req.db);
+  req.db = undefined;
+});
+
+app.get('/top', middlewareConnect, async (req, res) =>{
+  console.log('== Got request for top pears');
+  const topPears = await getTopPears(req.db);
+  console.log('topPears:', topPears);
+  res.render('home');
+  close(req.db);
+  req.db = undefined;
+});
+
+app.get('*', async (req, res) => {
+  res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() when you make it, Zach
+});
+
 
 /**
  * Capture the port configuration for the server. We use the PORT environment
@@ -76,6 +62,6 @@ const port = process.env.PORT || 3000;
 /**
  * Start the server.
  */
-app.listen(port, function() {
+app.listen(port, () => {
   console.log('== Server is listening on port', port);
 });
