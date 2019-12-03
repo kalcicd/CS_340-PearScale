@@ -16,10 +16,32 @@ const testUser = {
 };
 
 /**
+ * @name reportPear
+ * @param connection An open connection object
+ * @param PID The PID of the reported pear
+ * @param description Description of the report
+ * @returns {Promise<any>} resolves the created account
+ */
+const reportPear = async (connection, PID, description) => {
+    return await new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Reports (PID, Description, Date) VALUES (?, CURRENT_DATE())';
+        const bindVars = [[PID, description]];
+        connection.query(sql, bindVars, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== report inserted with RPID = ${result.insertId}`);
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
  * @name createAccount
  * @param connection An open connection object
  * @param userInfo An object containing user data
- * @returns {Promise<any>} resolves a confirmation or denial that user account was created
+ * @returns {Promise<any>} resolves the created account
  */
 const createAccount = async (connection, userInfo) => { // lol plaintext passwords
     return await new Promise((resolve, reject) => {
@@ -103,7 +125,7 @@ const ratePear = async (connection, UID, PID, rating) => {
             });
         });
     }
-}; // make sure to check if pear has already been rated by user
+};
 
 /**
  * @name getAverageRating
@@ -217,7 +239,7 @@ const createPear = async (connection, attributes) => {
 
 const conn = connectDb();
 const asyncTest = async () => {
-    const result = await logIn(conn, testUser);
+    const result = await reportPear(conn, 8, 'Delete this');
     console.log('result:', result);
     close(conn);
 
@@ -236,5 +258,6 @@ module.exports = {
     logIn,
     ratePear,
     getAverageRating,
+    reportPear,
 };
 

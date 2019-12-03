@@ -52,16 +52,8 @@ app.get('*', async (req, res) => {
   res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() or .render() when you make it, Zach
 });
 
-
-/**
- * Capture the port configuration for the server. We use the PORT environment
- * variable's value, but if it is not set, we will default to port 3000.
- */
 const port = process.env.PORT || 3000;
 
-/**
- * Start the server.
- */
 app.listen(port, () => {
   console.log('== Server is listening on port', port);
 });
