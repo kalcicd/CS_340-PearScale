@@ -2,7 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
-// const dao = require('./dao');
+const {getTopPears, getFreshPears} = require('./dao');
 const {middlewareConnect, close} = require('./connection');
 
 const app = express();
@@ -21,15 +21,34 @@ app.set('views', path.join(path.basename(__dirname), 'views'));
 // Setup static content serving
 app.use(express.static(path.join(path.basename(__dirname), 'public')));
 
-app.get('/', middlewareConnect, (req, res) => {
+app.get('/', middlewareConnect, async (req, res) => {
   console.log('== Got request for the home page');
-  res.render('home');
+  const freshPears = await getFreshPears(req.db);
+  res.render('home', freshPears);
 
   close(req.db);
   req.db = undefined;
 });
 
-app.get('*', (req, res) => {
+app.get('/fresh', middlewareConnect, async (req, res) => {
+  console.log('== Got request for the fresh page');
+  const freshPears = await getFreshPears(req.db);
+  res.render('home', freshPears);
+
+  close(req.db);
+  req.db = undefined;
+});
+
+app.get('/top', middlewareConnect, async (req, res) =>{
+  console.log('== Got request for top pears');
+  const topPears = await getTopPears(req.db);
+  console.log('topPears:', topPears);
+  res.render('home');
+  close(req.db);
+  req.db = undefined;
+});
+
+app.get('*', async (req, res) => {
   res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() when you make it, Zach
 });
 

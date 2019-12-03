@@ -1,8 +1,48 @@
+const {connectDb, close} = require('./connection');
+
 const testAttributes = {
     UID: 3,
     Title: 'Test Title',
     Description: 'Test Description',
     Image: 'fake-url.com',
+};
+
+/**
+ * @name getFreshPears
+ * @param connection An open connection object
+ * @returns {Promise<any>} returns a promise object that resolves with an array of newest pears
+ */
+const getFreshPears = async (connection) => {
+    return await new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM newestPears`;
+        connection.query(sql, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log('== Getting Top Pears');
+                resolve(result);
+            }
+        })
+    });
+};
+
+/**
+ * @name getTopPears
+ * @param connection An open connection object
+ * @returns {Promise<any>} returns a promise object that resolves with an array of top rated pears
+ */
+const getTopPears = async (connection) => {
+    return await new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM highestRatedPears`;
+        connection.query(sql, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log('== Getting Fresh Pears');
+                resolve(result);
+            }
+        });
+    });
 };
 
 /**
@@ -36,8 +76,11 @@ const createPear = async (connection, attributes) => {
 };
 
 const asyncTest = async () => {
-    const newPear = await createPear(testAttributes);
+    const conn = connectDb();
+    const newPear = await getFreshPears(conn);
     console.log('newPear:', newPear);
+    close(conn);
+
 };
 asyncTest().then().catch((error) => {
     console.log(error);
@@ -45,4 +88,7 @@ asyncTest().then().catch((error) => {
 
 module.exports = {
     createPear,
+    getTopPears,
+    getFreshPears,
 };
+
