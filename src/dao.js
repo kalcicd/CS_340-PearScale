@@ -79,6 +79,25 @@ const logIn = async (connection, userInfo) => {
 };
 
 /**
+ * @name deletePear
+ * @param connection An open connection object
+ * @param PID The PID of the pear to be deleted
+ */
+const deletePear = async (connection, PID) => {
+    return await new Promise((resolve, reject) => {
+        connection.query('DELETE FROM Pears WHERE PID = ?', [PID], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                const message = result.affectedRows === 1 ? `Deleted pear with id ${PID}` : `Pear ID ${PID} not found`;
+                console.log(`== ${message}`);
+                resolve(result);
+            }
+        });
+    })
+};
+
+/**
  * @name ratePear
  * @param connection An open connection object
  * @param UID The UID of the user rating the pear
@@ -239,7 +258,7 @@ const createPear = async (connection, attributes) => {
 
 const conn = connectDb();
 const asyncTest = async () => {
-    const result = await reportPear(conn, 8, 'Delete this');
+    const result = await deletePear(conn, 58);
     console.log('result:', result);
     close(conn);
 
@@ -251,6 +270,7 @@ asyncTest().catch((error) => {
 
 module.exports = {
     createPear,
+    deletePear,
     getRipePears,
     getFreshPears,
     searchPears,
