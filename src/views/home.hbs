@@ -23,3 +23,35 @@
     <button type="button" id="create-pear-button"><img src="./pear_icon.png"></img></button></button>
         {{pears}}
 </main>
+
+<div id="modal-backdrop" class="hidden"></div>
+<div id="create-pear-modal" class="hidden">
+    <div class="modal-dialog">
+
+        <div class="modal-header">
+            <h3>Post a Pear</h3>
+            <button type="button" class="modal-close-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="pear-input-element">
+                <label for="pear-text-input">Title</label>
+                <input type="text" id="pear-title-input">
+            </div>
+            <div class="pear-input-element">
+                <label for="pear-image-input">Image link</label>
+                <input type="text" id="pear-image-input">
+            </div>
+            <div class="pear-input-element">
+                <label for="pear-description-input">Description</label>
+                <textarea id="pear-description-input"></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" id="modal-cancel-button">Cancel</button>
+            <button type="button" id="modal-accept-button">Post</button>
+        </div>
+
+    </div>
+</div>
