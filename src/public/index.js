@@ -1,7 +1,7 @@
 const insertNewPear = (pimage, ptitle, pauthor) => {
-    var newPear = document.querySelector("main.pear-container");
-    var pearContent = Handlebars.templates.pear;
-    var pearHTML = pearContent({image: pimage, title: ptitle, author: pauthor});
+    const newPear = document.querySelector("main.pear-container");
+    const pearContent = Handlebars.templates.pear;
+    const pearHTML = pearContent({image: pimage, title: ptitle, author: pauthor});
     newPear.insertAdjacentHTML('beforeend', pearHTML);
 };
 
