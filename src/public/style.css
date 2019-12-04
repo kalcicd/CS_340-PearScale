@@ -3,8 +3,11 @@
   --background-color: #F9FBE4;
 }
 
+header {
+  background-color: var(--header-green);
+}
+
 body {
-  font-family: Roboto, Helvetica, sans-serif;
   margin: 0;
   background-color: var(--background-color);
 }
@@ -114,26 +117,26 @@ a:focus {
   /* align-items: center; */
 }
 
-pear-icon {
+.pear-icon {
   font-size: 24px;
 }
 
-pear-content {
+.pear-content {
   flex: 1 10 80%;
   margin-left: 10px;
 }
 
-pear-content p {
+.pear-content p {
   margin: 0;
 }
 
-pear-content pear-attribution {
+.pear-content pear-attribution {
   margin-top: 8px;
   text-align: right;
   font-weight: bold;
 }
 
-#create-twit-button {
+#create-pear-button {
   position: fixed;
   right: 30px;
   bottom: 30px;
@@ -148,8 +151,8 @@ pear-content pear-attribution {
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-#create-twit-button:hover,
-#create-twit-button:focus {
+#create-pear-button:hover,
+#create-pear-button:focus {
   right: 27px;
   bottom: 27px;
   height: 66px;
@@ -159,7 +162,7 @@ pear-content pear-attribution {
   background-color: var(--header-green);
 }
 
-#create-twit-button:focus {
+#create-pear-button:focus {
   outline: none;
 }
 
