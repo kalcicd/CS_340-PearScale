@@ -7,26 +7,19 @@ const {middlewareConnect, close} = require('./connection');
 
 const app = express();
 
-// Configure handlebars
-const hbs = exphbs.create({
-  defaultLayout: 'main',
-  extname: '.hbs'
-});
-
 // Configure the views
-app.engine('hbs', hbs.engine);
+app.engine('hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', 'hbs');
-app.set('views', path.join(path.basename(__dirname), 'views'));
+app.set('views', path.join(__dirname, 'views'));
 
 // Setup static content serving
-app.use(express.static(path.join(path.basename(__dirname), 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', middlewareConnect, async (req, res) => {
   console.log('== Got request for the home page');
   const freshPears = await getFreshPears(req.db);
   console.log('fresh:', freshPears);
   res.render('home', freshPears);
-
   close(req.db);
   req.db = undefined;
 });
@@ -35,7 +28,6 @@ app.get('/fresh', middlewareConnect, async (req, res) => {
   console.log('== Got request for the fresh page');
   const freshPears = await getFreshPears(req.db);
   res.render('home', freshPears);
-
   close(req.db);
   req.db = undefined;
 });

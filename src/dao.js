@@ -256,18 +256,6 @@ const createPear = async (connection, attributes) => {
     });
 };
 
-const conn = connectDb();
-const asyncTest = async () => {
-    const result = await deletePear(conn, 58);
-    console.log('result:', result);
-    close(conn);
-
-};
-asyncTest().catch((error) => {
-    close(conn);
-    console.log(error);
-});
-
 module.exports = {
     createPear,
     deletePear,
