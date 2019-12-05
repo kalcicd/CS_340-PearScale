@@ -70,8 +70,8 @@ const login = () => {
 
 const search = () => {
     const query = document.getElementById("navbar-search-input").value;
-    console.log("Searching for " + query);
     document.getElementById("navbar-search-input").value = '';
+    window.location.replace(`/?search=${query}`);
 };
 
 window.addEventListener('DOMContentLoaded', function () {

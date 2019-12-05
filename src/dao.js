@@ -1,20 +1,6 @@
 const _ = require('lodash');
 const {connectDb, close} = require('./connection');
 
-const testPear = {
-    UID: 3,
-    title: 'Test Title',
-    description: 'Test Description',
-    image: 'fake-url.com',
-};
-
-const testUser = {
-    username: 'Foo',
-    password: 'wrongpassword',
-    birthday: '2011-10-10',
-    email: 'user@gmail.com',
-};
-
 /**
  * @name reportPear
  * @param PID The PID of the reported pear

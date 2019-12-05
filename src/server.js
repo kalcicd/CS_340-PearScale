@@ -2,7 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
-const {getRipePears, getFreshPears} = require('./dao');
+const {getRipePears, getFreshPears, searchPears} = require('./dao');
 
 const app = express();
 
@@ -15,9 +15,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', async (req, res) => {
-    console.log('== Got request for the home page');
-    const freshPears = await getFreshPears();
-    res.render('home', {pears: freshPears});
+    const search = req.query.search;
+    if (search) {
+        console.log(`== Searching ${search} pears`);
+        const results = await searchPears(search);
+        res.render('home', {pears: results});
+    } else {
+        console.log('== Got request for the home page');
+        const freshPears = await getFreshPears();
+        res.render('home', {pears: freshPears});
+    }
 });
 
 app.get('/fresh', async (req, res) => {
