@@ -12,7 +12,7 @@ const createNewPear = (pimage, ptitle, pauthor) => {
 
 const getAllPears = (pears) => {
     var allPears = [];
-    for(ii = 0; ii < pears.length; ii ++) {
+    for (ii = 0; ii < pears.length; ii++) {
         allPears.push(createNewPear(pears[ii].Image, pears[ii].Title, pears[ii].Username));
     }
     return allPears;
@@ -26,7 +26,7 @@ const showPearModal = () => {
 const hidePearModal = () => {
     var inputs = document.getElementsByClassName("pear-input-element");
 
-    for(ii = 0; ii < inputs.length; ii ++) {
+    for (ii = 0; ii < inputs.length; ii++) {
         var content = inputs[ii].querySelector('input, textarea');
         content.value = '';
     }
@@ -54,7 +54,7 @@ const showLoginModal = () => {
 const hideLoginModal = () => {
     var inputs = document.getElementsByClassName("login-input-element");
 
-    for(ii = 0; ii < inputs.length; ii ++) {
+    for (ii = 0; ii < inputs.length; ii++) {
         var content = inputs[ii].querySelector('input, textarea');
         content.value = '';
     }
@@ -74,8 +74,12 @@ const search = () => {
     document.getElementById("navbar-search-input").value = '';
 };
 
-window.addEventListener('DOMContentLoaded', function() {
-    
+const renderRipePears = (connection) => {
+
+};
+
+window.addEventListener('DOMContentLoaded', function () {
+
     document.getElementById("create-pear-button").addEventListener('click', showPearModal);
     document.getElementById("pear-cancel-button").addEventListener('click', hidePearModal);
     document.getElementById("pear-accept-button").addEventListener('click', postPear);

@@ -15,29 +15,23 @@ app.set('views', path.join(__dirname, 'views'));
 // Setup static content serving
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', middlewareConnect, async (req, res) => {
+app.get('/', async (req, res) => {
   console.log('== Got request for the home page');
-  const freshPears = await getFreshPears(req.db);
+  const freshPears = await getFreshPears();
   console.log('fresh:', freshPears);
   res.render('home', freshPears);
-  close(req.db);
-  req.db = undefined;
 });
 
-app.get('/fresh', middlewareConnect, async (req, res) => {
+app.get('/fresh', async (req, res) => {
   console.log('== Got request for the fresh page');
-  const freshPears = await getFreshPears(req.db);
+  const freshPears = await getFreshPears();
   res.render('home', freshPears);
-  close(req.db);
-  req.db = undefined;
 });
 
-app.get('/ripe', middlewareConnect, async (req, res) =>{
+app.get('/ripe', async (req, res) =>{
   console.log('== Got request for ripe pears');
-  const ripePears = await getRipePears(req.db);
+  const ripePears = await getRipePears();
   res.render('home');
-  close(req.db);
-  req.db = undefined;
 });
 
 app.get('*', async (req, res) => {
