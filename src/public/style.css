@@ -116,7 +116,7 @@ a:focus {
   border: 1px solid #dadada;
   border-radius: 2px;
   background-color: #fff;
-  /* align-items: center; */
+  flex-direction: column;
 }
 
 .pear-icon {
@@ -126,16 +126,50 @@ a:focus {
 .pear-content {
   flex: 1 10 80%;
   margin-left: 10px;
+  position: relative;
+}
+
+.pear-info {
+  flex: 1 10 80%;
+  margin-left: 10px;
+  position: relative;
+}
+
+.pear-image {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .pear-content p {
   margin: 0;
 }
 
-.pear-content pear-attribution {
+.pear-poster {
   margin-top: 8px;
   text-align: right;
   font-weight: bold;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+}
+
+.pear-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.pear-rating {
+  color: var(--header-green);
+  font-size: 35px;
+  position: absolute;
+  bottom:0;
+  right:0;
+  text-shadow:
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
 }
 
 #pear-icon {

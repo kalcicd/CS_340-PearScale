@@ -3,7 +3,8 @@ const createNewPear = (pimage, ptitle, pauthor) => {
     const pearContent = {
         image: pimage,
         title: ptitle,
-        author: pauthor
+        author: pauthor,
+        rating: Math.floor(Math.random()*1500)/100
     };
     const pearHTML = Handlebars.templates.pear(pearContent);
     //newPear.insertAdjacentHTML('beforeend', pearHTML);
