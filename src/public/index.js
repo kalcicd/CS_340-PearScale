@@ -11,7 +11,7 @@ const createNewPear = (pimage, ptitle, pauthor) => {
 };
 
 const getAllPears = (pears) => {
-    var allPears = [];
+    const allPears = [];
     for (ii = 0; ii < pears.length; ii++) {
         allPears.push(createNewPear(pears[ii].Image, pears[ii].Title, pears[ii].Username));
     }
@@ -24,10 +24,10 @@ const showPearModal = () => {
 };
 
 const hidePearModal = () => {
-    var inputs = document.getElementsByClassName("pear-input-element");
+    const inputs = document.getElementsByClassName("pear-input-element");
 
     for (ii = 0; ii < inputs.length; ii++) {
-        var content = inputs[ii].querySelector('input, textarea');
+        const content = inputs[ii].querySelector('input, textarea');
         content.value = '';
     }
 
@@ -36,10 +36,10 @@ const hidePearModal = () => {
 };
 
 const postPear = () => {
-    var image = document.getElementById('pear-image-input').value;
-    var title = document.getElementById('pear-title-input').value;
-    //var description = document.getElementById('pear-description-input').value;
-    var author = "cool guy";
+    const image = document.getElementById('pear-image-input').value;
+    const title = document.getElementById('pear-title-input').value;
+    //const description = document.getElementById('pear-description-input').value;
+    const author = "cool guy";
     const newPear = createNewPear(image, title, author);
     const pearHTML = document.querySelector("main.pear-container");
     pearHTML.insertAdjacentHTML('beforeend', newPear);
@@ -52,10 +52,10 @@ const showLoginModal = () => {
 };
 
 const hideLoginModal = () => {
-    var inputs = document.getElementsByClassName("login-input-element");
+    const inputs = document.getElementsByClassName("login-input-element");
 
     for (ii = 0; ii < inputs.length; ii++) {
-        var content = inputs[ii].querySelector('input, textarea');
+        const content = inputs[ii].querySelector('input, textarea');
         content.value = '';
     }
 
@@ -74,21 +74,17 @@ const search = () => {
     document.getElementById("navbar-search-input").value = '';
 };
 
-const renderRipePears = (connection) => {
-
-};
-
 window.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById("create-pear-button").addEventListener('click', showPearModal);
     document.getElementById("pear-cancel-button").addEventListener('click', hidePearModal);
     document.getElementById("pear-accept-button").addEventListener('click', postPear);
-    document.getElementsByClassName("pear-close-button")[0].addEventListener('click', hidePearModal)
+    document.getElementsByClassName("pear-close-button")[0].addEventListener('click', hidePearModal);
 
     document.getElementById("login-button").addEventListener('click', showLoginModal);
     document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
     document.getElementById("login-login-button").addEventListener('click', login);
-    document.getElementsByClassName("login-close-button")[0].addEventListener('click', hideLoginModal)
+    document.getElementsByClassName("login-close-button")[0].addEventListener('click', hideLoginModal);
 
     document.getElementById("navbar-search-button").addEventListener('click', search);
 });
