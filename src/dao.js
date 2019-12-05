@@ -20,6 +20,7 @@ const getFreshPears = async (connection) => {
                 reject(err);
             } else {
                 console.log('== Getting Top Pears');
+                console.log(result);
                 resolve(result);
             }
         })
@@ -75,16 +76,16 @@ const createPear = async (connection, attributes) => {
     });
 };
 
-const asyncTest = async () => {
-    const conn = connectDb();
-    const newPear = await getFreshPears(conn);
-    console.log('newPear:', newPear);
-    close(conn);
+// const asyncTest = async () => {
+//     const conn = connectDb();
+//     const newPear = await getFreshPears(conn);
+//     console.log('newPear:', newPear);
+//     close(conn);
 
-};
-asyncTest().then().catch((error) => {
-    console.log(error);
-});
+// };
+// asyncTest().then().catch((error) => {
+//     console.log(error);
+// });
 
 module.exports = {
     createPear,

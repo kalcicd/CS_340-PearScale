@@ -1,6 +1,8 @@
 :root {
   --header-green:#D1E231;
   --background-color: #F9FBE4;
+  --button-green:  #78E231;
+  --button-active: #325D14;
 }
 
 header {
@@ -107,7 +109,7 @@ a:focus {
 }
 
 .pear {
-  flex: 0 1 28%;
+  flex: 0 1 14%;
   display: flex;
   margin: 2px;
   padding: 20px;
@@ -136,6 +138,10 @@ a:focus {
   font-weight: bold;
 }
 
+#pear-icon {
+  color: white;
+}
+
 #create-pear-button {
   position: fixed;
   right: 30px;
@@ -145,8 +151,7 @@ a:focus {
   border: none;
   border-radius: 30px;
   font-size: 30px;
-  background-color: #ff1010;
-  color: #fff;
+  background-color: var(--button-green);
   cursor: pointer;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
 }
@@ -159,7 +164,7 @@ a:focus {
   width: 66px;
   border-radius: 33px;
   font-size: 36px;
-  background-color: var(--header-green);
+  background-color: var(--button-active);
 }
 
 #create-pear-button:focus {
@@ -177,6 +182,16 @@ a:focus {
 }
 
 #create-pear-modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1010;
+  overflow: scroll;
+}
+
+#login-modal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -210,7 +225,18 @@ a:focus {
   font-size: 28px;
 }
 
-.modal-close-button {
+.login-close-button {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pear-close-button {
   position: absolute;
   right: 10px;
   top: 5px;
@@ -225,28 +251,28 @@ a:focus {
   padding: 20px;
 }
 
-pear-input-element {
+.pear-input-element, .login-input-element {
   display: flex;
   align-items: center;
   font-size: 20px;
   margin: 10px 0;
 }
 
-pear-input-element label {
+.pear-input-element label, .login-input-element label {
   font-weight: 600;
   flex: 1 75px;
   margin-right: 10px;
 }
 
-pear-input-element input,
-pear-input-element textarea {
+.pear-input-element input,
+.pear-input-element textarea, .login-input-element input {
   flex: 6 200px;
   padding: 8px;
   font-size: 20px;
   border: 1px solid #aaa;
 }
 
-pear-input-element textarea {
+.pear-input-element textarea {
   min-height: 64px;
 }
 
@@ -256,7 +282,7 @@ pear-input-element textarea {
   padding: 10px 10px 20px 10px;
 }
 
-.modal-footer button {
+.modal-footer button, .cancel-button {
   font-size: 20px;
   background-color: #fff;
   color: #333;
@@ -267,36 +293,6 @@ pear-input-element textarea {
   cursor: pointer;
 }
 
-.modal-footer .modal-cancel-button:hover {
-  background-color: #eee;
-}
-
-.modal-footer .modal-accept-button {
+.modal-footer button:hover {
   background-color: var(--header-green);
-  color: #fff;
-}
-
-.modal-footer .modal-accept-button:hover {
-  background-color: var(--header-green);
-}
-
-.error-container {
-  margin-top: 50px;
-  text-align: center;
-}
-
-.error-container h2 {
-  margin: 10px 0;
-  font-size: 96px;
-  font-weight: 100;
-}
-
-.error-container h3 {
-  margin: 10px 0;
-  font-size: 36px;
-  font-weight: 400;
-}
-
-.icon-attribution {
-  font-size: 5;
 }

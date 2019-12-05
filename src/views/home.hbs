@@ -3,25 +3,11 @@
         <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" defer></script>
         {{!-- TODO: STYLE THIS ICON --}}
         {{!-- <img class="pear_icon" src="pear_icon.png"></img> --}}
-        <a href="#"><h1 class="site-title">PearScale</h1></a>
         
-
-        <nav class="navbar">
-            <ul class="navlist">
-                <li class="navitem navlink active"><a href="#">Home</a></li>
-                <li class="navitem navlink"><a href="#">Fresh</a></li>
-                <li class="navitem navlink"><a href="#">Ripe</a></li>
-                <li class="navitem navbar-search">
-                <input type="text" id="navbar-search-input" placeholder="Find the pearfect pear...">
-                <button type="button" id="navbar-search-button"><i class="fas fa-search"></i></button>
-                </li>
-            </ul>
-        </nav>
 </header>
 
 <main class="pear-container">
-    <button type="button" id="create-pear-button"><img src="./pear_icon.png"></img></button></button>
-        {{pears}}
+    <button type="button" id="create-pear-button"><img id="pear-icon" src="pear_icon.png" width=40 heigh=40></img></button>
 </main>
 
 <div id="modal-backdrop" class="hidden"></div>
@@ -30,12 +16,12 @@
 
         <div class="modal-header">
             <h3>Post a Pear</h3>
-            <button type="button" class="modal-close-button">&times;</button>
+            <button type="button" class="pear-close-button">&times;</button>
         </div>
 
         <div class="modal-body">
             <div class="pear-input-element">
-                <label for="pear-text-input">Title</label>
+                <label for="pear-title-input">Title</label>
                 <input type="text" id="pear-title-input">
             </div>
             <div class="pear-input-element">
@@ -49,9 +35,34 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" id="modal-cancel-button">Cancel</button>
-            <button type="button" id="modal-accept-button">Post</button>
+            <button type="button" id="pear-cancel-button">Cancel</button>
+            <button type="button" id="pear-accept-button">Post</button>
         </div>
 
+    </div>
+</div>
+
+<div id="login-modal" class="hidden">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Login</h3>
+            <button type="button" class="login-close-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="login-input-element">
+                <label for="username-input">Username</label>
+                <input type="text" id="username-input">
+            </div>
+            <div class="login-input-element">
+                <label for="password-input">Password</label>
+                <input type="password" id="password-input">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" id="login-cancel-button">Cancel</button>
+            <button type="button" id="login-login-button">Login</button>
+        </div>
     </div>
 </div>
