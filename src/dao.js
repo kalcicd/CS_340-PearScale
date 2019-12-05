@@ -1,10 +1,190 @@
+const _ = require('lodash');
 const {connectDb, close} = require('./connection');
 
-const testAttributes = {
+const testPear = {
     UID: 3,
-    Title: 'Test Title',
-    Description: 'Test Description',
-    Image: 'fake-url.com',
+    title: 'Test Title',
+    description: 'Test Description',
+    image: 'fake-url.com',
+};
+
+const testUser = {
+    username: 'Foo',
+    password: 'wrongpassword',
+    birthday: '2011-10-10',
+    email: 'user@gmail.com',
+};
+
+/**
+ * @name reportPear
+ * @param connection An open connection object
+ * @param PID The PID of the reported pear
+ * @param description Description of the report
+ * @returns {Promise<any>} resolves the created account
+ */
+const reportPear = async (connection, PID, description) => {
+    return await new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Reports (PID, Description, Date) VALUES (?, CURRENT_DATE())';
+        const bindVars = [[PID, description]];
+        connection.query(sql, bindVars, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== report inserted with RPID = ${result.insertId}`);
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
+ * @name createAccount
+ * @param connection An open connection object
+ * @param userInfo An object containing user data
+ * @returns {Promise<any>} resolves the created account
+ */
+const createAccount = async (connection, userInfo) => { // lol plaintext passwords
+    return await new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Users (Username, Password, Birthday, Email) VALUES (?)';
+        const bindVars = [[userInfo.username, userInfo.password, userInfo.birthday, userInfo.email]];
+        connection.query(sql, bindVars, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== row inserted with UID = ${result.insertId}`);
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
+ * @name logIn
+ * @param connection An open connection object
+ * @param userInfo An object containing the user's login info
+ * @returns {Promise<any>} resolves object of logged in user, undefined if incorrect login
+ */
+const logIn = async (connection, userInfo) => {
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Users WHERE (Username = ? AND Password = ?)';
+        const sqlBinds = [userInfo.username, userInfo.password];
+        connection.query(sql, sqlBinds, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result[0]);
+            }
+        });
+    });
+};
+
+/**
+ * @name deletePear
+ * @param connection An open connection object
+ * @param PID The PID of the pear to be deleted
+ */
+const deletePear = async (connection, PID) => {
+    return await new Promise((resolve, reject) => {
+        connection.query('DELETE FROM Pears WHERE PID = ?', [PID], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                const message = result.affectedRows === 1 ? `Deleted pear with id ${PID}` : `Pear ID ${PID} not found`;
+                console.log(`== ${message}`);
+                resolve(result);
+            }
+        });
+    })
+};
+
+/**
+ * @name ratePear
+ * @param connection An open connection object
+ * @param UID The UID of the user rating the pear
+ * @param PID The PID of the pear to be rated
+ * @param rating A numeric rating of the pear
+ */
+const ratePear = async (connection, UID, PID, rating) => {
+    const rated = await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Ratings WHERE (PID = ? AND UID = ?)';
+        const sqlBinds = [PID, UID];
+        connection.query(sql, sqlBinds, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+    const sqlBinds = [rating, PID, UID];
+    console.log('rated:', rated);
+    if (!_.isEmpty(rated)) {
+        return await new Promise((resolve, reject) => {
+            const sql = 'UPDATE Ratings SET Score = ? WHERE (PID = ? AND UID = ?)';
+            connection.query(sql, sqlBinds, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log('== Rating updated');
+                    resolve(result);
+                }
+            });
+        });
+    } else {
+        return await new Promise((resolve, reject) => {
+            const sql = `INSERT INTO Ratings (Score, PID, UID) VALUES (?)`;
+            const sqlBinds = [rating, PID, UID];
+            connection.query(sql, [sqlBinds], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log('== New rating added');
+                    resolve(result);
+                }
+            });
+        });
+    }
+};
+
+/**
+ * @name getAverageRating
+ * @param connection An open connection object
+ * @param PID The PID of the pear
+ * @returns {Promise<any>} resolves the average rating of pear
+ */
+const getAverageRating = async (connection, PID) => {
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT AVG(Score) AS average FROM Ratings WHERE PID = ?';
+        connection.query(sql, [PID], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result[0].average);
+            }
+        })
+    });
+};
+
+/**
+ * @name searchPears
+ * @param connection An open connection object
+ * @param search A search query
+ * @returns {Promise<any>} returns a promise object that resolves with an array of newest pears
+ */
+const searchPears = async (connection, search) => {
+    return await new Promise((resolve, reject) => {
+        const sanitized = search.toLowerCase();
+        const sql = `SELECT PID, UID, Title, Description, Image, Date, Time
+        FROM (SELECT * FROM pearTags WHERE Tag LIKE '%${sanitized}%') as swag`;
+        connection.query(sql, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== Getting Pears with tags containing '${sanitized}'`);
+                resolve(result);
+            }
+        });
+    });
 };
 
 /**
@@ -19,7 +199,7 @@ const getFreshPears = async (connection) => {
             if (err) {
                 reject(err);
             } else {
-                console.log('== Getting Top Pears');
+                console.log('== Getting Fresh Pears');
                 resolve(result);
             }
         })
@@ -27,18 +207,18 @@ const getFreshPears = async (connection) => {
 };
 
 /**
- * @name getTopPears
+ * @name getRipePears
  * @param connection An open connection object
  * @returns {Promise<any>} returns a promise object that resolves with an array of top rated pears
  */
-const getTopPears = async (connection) => {
+const getRipePears = async (connection) => {
     return await new Promise((resolve, reject) => {
         const sql = `SELECT * FROM highestRatedPears`;
         connection.query(sql, (err, result) => {
             if (err) {
                 reject(err);
             } else {
-                console.log('== Getting Fresh Pears');
+                console.log('== Getting Top Pears');
                 resolve(result);
             }
         });
@@ -55,7 +235,8 @@ const createPear = async (connection, attributes) => {
     const {insertId} = await new Promise((resolve, reject) => {
         const sql = 'INSERT INTO Pears (UID, Title, Description, Image, Date, Time) ' +
             'VALUES (?, CURRENT_DATE(), CURRENT_TIME())';
-        connection.query(sql, [Object.values(attributes)], (err, result) => {
+        const bindVars = [[attributes.UID, attributes.title, attributes.description, attributes.image]];
+        connection.query(sql, bindVars, (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -75,20 +256,28 @@ const createPear = async (connection, attributes) => {
     });
 };
 
+const conn = connectDb();
 const asyncTest = async () => {
-    const conn = connectDb();
-    const newPear = await getFreshPears(conn);
-    console.log('newPear:', newPear);
+    const result = await deletePear(conn, 58);
+    console.log('result:', result);
     close(conn);
 
 };
-asyncTest().then().catch((error) => {
+asyncTest().catch((error) => {
+    close(conn);
     console.log(error);
 });
 
 module.exports = {
     createPear,
-    getTopPears,
+    deletePear,
+    getRipePears,
     getFreshPears,
+    searchPears,
+    createAccount,
+    logIn,
+    ratePear,
+    getAverageRating,
+    reportPear,
 };
 

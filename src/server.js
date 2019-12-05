@@ -2,7 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
-const {getTopPears, getFreshPears} = require('./dao');
+const {getRipePears, getFreshPears} = require('./dao');
 const {middlewareConnect, close} = require('./connection');
 
 const app = express();
@@ -24,6 +24,7 @@ app.use(express.static(path.join(path.basename(__dirname), 'public')));
 app.get('/', middlewareConnect, async (req, res) => {
   console.log('== Got request for the home page');
   const freshPears = await getFreshPears(req.db);
+  console.log('fresh:', freshPears);
   res.render('home', freshPears);
 
   close(req.db);
@@ -39,29 +40,22 @@ app.get('/fresh', middlewareConnect, async (req, res) => {
   req.db = undefined;
 });
 
-app.get('/top', middlewareConnect, async (req, res) =>{
-  console.log('== Got request for top pears');
-  const topPears = await getTopPears(req.db);
-  console.log('topPears:', topPears);
+app.get('/ripe', middlewareConnect, async (req, res) =>{
+  console.log('== Got request for ripe pears');
+  const ripePears = await getRipePears(req.db);
   res.render('home');
   close(req.db);
   req.db = undefined;
 });
 
 app.get('*', async (req, res) => {
-  res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() when you make it, Zach
+  res.send('YOU GOT LOST LOL'); // send the 404 html page with .sendFile() or .render() when you make it, Zach
 });
 
 
-/**
- * Capture the port configuration for the server. We use the PORT environment
- * variable's value, but if it is not set, we will default to port 6969.
- */
 const port = process.env.PORT || 6969;
 
-/**
- * Start the server.
- */
+
 app.listen(port, () => {
   console.log('== Server is listening on port', port);
 });
