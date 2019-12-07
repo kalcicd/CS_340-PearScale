@@ -1,16 +1,18 @@
 <article class="pear">
-    
-    <div class="pear-content">
-        <img class="pear-image" src={{Image}} alt={{Description}}>
+    <a class="pear-image-container" href="/pear/{{PID}}">
+        <img class="pear-image" src="{{Image}}" title="{{Description}}">
+    </a>
+    <div class="pear-content">       
+            <p class="pear-title">
+                {{Title}}
+            </p>
+            <p class="pear-poster">
+                <a href="/user/{{Username}}">{{Username}}</a>
+            </p>
+            <p class="pear-rating">
+                {{Average}}
+            </p>
     </div> 
-
-    <div class="pear-info"></div>
-        <p class="pear-title">
-            {{Title}}
-        </p>
-        <p class="pear-poster">
-            <a href="#">{{Username}}</a>
-        </p>
+    <div class="pear-hover-content">
     </div>
-
 </article>

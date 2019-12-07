@@ -12,6 +12,7 @@ header {
 body {
   margin: 0;
   background-color: var(--background-color);
+  font-family: sans-serif;
 }
 
 a {
@@ -22,7 +23,8 @@ a {
   margin: 0;
   padding: 10px 20px;
   font-size: 30px;
-  font-weight: 1000;
+  font-weight: 1;
+  font-style: bold;
   background-color: var(--header-green);
   color: #fff;
 }
@@ -109,12 +111,12 @@ a:focus {
 }
 
 .pear {
-  flex: 0 1 14%;
+  flex: 0 1 19%;
   display: flex;
   margin: 2px;
-  padding: 20px;
+  padding: 2px;
   border: 1px solid #dadada;
-  border-radius: 2px;
+  border-radius: 5px;
   background-color: #fff;
   flex-direction: column;
 }
@@ -123,35 +125,34 @@ a:focus {
   font-size: 24px;
 }
 
-.pear-content {
-  flex: 1 10 80%;
-  margin-left: 10px;
-  position: relative;
+.pear-image-container {
+  width:100%;
+  height: 90%;
+  border-radius: 5px;
+  z-index: 2000;
 }
 
-.pear-info {
-  flex: 1 10 80%;
-  margin-left: 10px;
-  position: relative;
+.pear-image-container:hover{
+  filter: brightness(250%);
+  cursor: pointer;
 }
 
 .pear-image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
-img{
-  max-width: 100%;
-  max-height: 100%;
-  display: block
-}
-
-.pear-content p {
-  margin: 0;
+.pear-content {
+  flex: 1 10 20%;
+  position: relative;
+  z-index: 2010;
+  background-color: white;
 }
 
 .pear-poster {
   margin-top: 8px;
+  margin-bottom: 0;
   text-align: right;
   font-weight: bold;
   position: absolute;
@@ -163,10 +164,12 @@ img{
   position: absolute;
   bottom: 0;
   left: 0;
+  margin-bottom: 0;
 }
 
 .pear-rating {
   color: var(--header-green);
+  margin-bottom: 0px;
   font-size: 35px;
   position: absolute;
   bottom:0;
@@ -176,6 +179,10 @@ img{
 		1px -1px 0 #000,
 		-1px 1px 0 #000,
 		1px 1px 0 #000;
+}
+
+.pear-rating:hover {
+  cursor: default;
 }
 
 #pear-icon {
