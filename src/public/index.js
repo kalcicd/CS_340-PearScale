@@ -5,9 +5,9 @@ const createNewPear = (pimage, ptitle, pauthor) => {
         title: ptitle,
         author: pauthor
     };
-    const pearHTML = Handlebars.templates.pear(pearContent);
     //newPear.insertAdjacentHTML('beforeend', pearHTML);
-    return pearHTML;
+    return pearHTML = Handlebars.templates.pear(pearContent);
+
 };
 
 const getAllPears = (pears) => {
@@ -38,12 +38,30 @@ const hidePearModal = () => {
 const postPear = () => {
     const image = document.getElementById('pear-image-input').value;
     const title = document.getElementById('pear-title-input').value;
-    //const description = document.getElementById('pear-description-input').value;
+    const description = document.getElementById('pear-description-input').value;
     const author = "cool guy";
+    const newPearAttributes = {
+        UID: 1,
+        image: image,
+        title: title,
+        description: description,
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(newPearAttributes),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    console.log('options.body', options.body);
+    // Once pages for individual pears are created, we will just redirect to that page instead of inserting pear locally
     const newPear = createNewPear(image, title, author);
     const pearHTML = document.querySelector("main.pear-container");
     pearHTML.insertAdjacentHTML('beforeend', newPear);
     hidePearModal();
+    fetch('/createPear', options).catch((err) => {
+        console.log(err);
+    });
 };
 
 const showLoginModal = () => {

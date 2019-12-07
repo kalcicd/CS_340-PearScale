@@ -183,6 +183,27 @@ const searchPears = async (search) => {
 };
 
 /**
+ * @name getPearById
+ * @param id Id of a pear to get
+ * @returns {Promise<any>} returns a promise object that resolves with the requested pear
+ */
+const getPearById = async (id) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM Pears WHERE PID = ?`;
+        connection.query(sql, [id], (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== Getting Pear with pid = ${id}`);
+                resolve(result[0]);
+            }
+        })
+    });
+};
+
+/**
  * @name getFreshPears
  * @returns {Promise<any>} returns a promise object that resolves with an array of newest pears
  */
@@ -265,5 +286,6 @@ module.exports = {
     ratePear,
     getAverageRating,
     reportPear,
+    getPearById,
 };
 
