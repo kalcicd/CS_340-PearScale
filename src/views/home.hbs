@@ -7,7 +7,10 @@
 </header>
 
 <main class="pear-container">
-    <button type="button" id="create-pear-button"><img id="pear-icon" src="pear_icon.png" width=40 heigh=40></img></button>
+    <button type="button" id="create-pear-button"><img id="pear-icon" src="pear_icon.png" width=40 height=40/></button>
+    {{#each pears}}
+        {{> pear}}
+    {{/each}}
 </main>
 
 <div id="modal-backdrop" class="hidden"></div>
