@@ -10,14 +10,6 @@ const createNewPear = (pimage, ptitle, pauthor) => {
 
 };
 
-const getAllPears = (pears) => {
-    const allPears = [];
-    for (ii = 0; ii < pears.length; ii++) {
-        allPears.push(createNewPear(pears[ii].Image, pears[ii].Title, pears[ii].Username));
-    }
-    return allPears;
-};
-
 const showPearModal = () => {
     document.getElementById("create-pear-modal").classList.remove("hidden");
     document.getElementById("modal-backdrop").classList.remove("hidden");
@@ -25,7 +17,6 @@ const showPearModal = () => {
 
 const hidePearModal = () => {
     const inputs = document.getElementsByClassName("pear-input-element");
-
     for (ii = 0; ii < inputs.length; ii++) {
         const content = inputs[ii].querySelector('input, textarea');
         content.value = '';
