@@ -4,7 +4,7 @@ const createNewPear = (pimage, ptitle, pdescription, pauthor) => {
         title: ptitle,
         description: pdescription,
         author: pauthor,
-        rating: Math.floor(Math.random()*1500)/100
+        rating: Math.floor(Math.random() * 1500) / 100
     };
     return pearHTML = Handlebars.templates.pear(pearContent);
 
@@ -30,9 +30,7 @@ const postPear = () => {
     const image = document.getElementById('pear-image-input').value;
     const title = document.getElementById('pear-title-input').value;
     const description = document.getElementById('pear-description-input').value;
-    const author = "cool guy";
     const newPearAttributes = {
-        UID: 1,
         image: image,
         title: title,
         description: description
@@ -44,10 +42,6 @@ const postPear = () => {
             'Content-Type': 'application/json'
         }
     };
-    // Once pages for individual pears are created, we will just redirect to that page instead of inserting pear locally
-    const newPear = createNewPear(image, title, author);
-    const pearHTML = document.querySelector("main.pear-container");
-    pearHTML.insertAdjacentHTML('beforeend', newPear);
     hidePearModal();
     fetch('/createPear', options).catch((err) => {
         console.log(err);

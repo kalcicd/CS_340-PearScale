@@ -245,7 +245,7 @@ const getRipePears = async () => {
 /**
  * @name createPear Inserts a pear into the DB
  * @param attributes An object
- * @returns {Promise<any>} returns a promise object that resolves with newly inserted row
+ * @returns {Promise<any>} returns a promise object that resolves with newly inserted/updated row
  */
 const createPear = async (attributes) => {
     const connection = connectDb();
