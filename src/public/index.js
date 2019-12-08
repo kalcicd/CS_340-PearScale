@@ -1,11 +1,11 @@
-const createNewPear = (pimage, ptitle, pauthor) => {
-    // const newPear = document.querySelector("main.pear-container");
+const createNewPear = (pimage, ptitle, pdescription, pauthor) => {
     const pearContent = {
         image: pimage,
         title: ptitle,
-        author: pauthor
+        description: pdescription,
+        author: pauthor,
+        rating: Math.floor(Math.random()*1500)/100
     };
-    //newPear.insertAdjacentHTML('beforeend', pearHTML);
     return pearHTML = Handlebars.templates.pear(pearContent);
 
 };
@@ -35,7 +35,7 @@ const postPear = () => {
         UID: 1,
         image: image,
         title: title,
-        description: description,
+        description: description
     };
     const options = {
         method: 'POST',
