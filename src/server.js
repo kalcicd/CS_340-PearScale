@@ -142,13 +142,14 @@ app.post('/logout', async (req, res) => {
 });
 
 
-app.get('/pears/:pid', async (req, res) => {
+app.get('/pear/:pid', async (req, res) => {
     const PID = req.params.pid;
     const result = await getPearById(PID).catch((err) => console.log(err));
-    res.render('pear', {pearInfo: result});
+    res.send(`On user page ${PID}`);
+    // res.render('pear', {pearInfo: result});
 });
 
-app.get('/users/:uid', async (req, res) => {
+app.get('/user/:uid', async (req, res) => {
     const UID = req.params.uid;
     res.send(`On user page ${UID}`);
     /*

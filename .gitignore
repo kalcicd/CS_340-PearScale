@@ -69,3 +69,4 @@ src/config.js
 # intellij stuff
 .idea
 
+src/public/pearTemplate.js
