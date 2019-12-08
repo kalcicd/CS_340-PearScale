@@ -44,7 +44,6 @@ const postPear = () => {
             'Content-Type': 'application/json'
         }
     };
-    console.log('options.body', options.body);
     // Once pages for individual pears are created, we will just redirect to that page instead of inserting pear locally
     const newPear = createNewPear(image, title, author);
     const pearHTML = document.querySelector("main.pear-container");
@@ -73,8 +72,27 @@ const hideLoginModal = () => {
 };
 
 const login = () => {
-    console.log("TODO: This");
+    const username = document.getElementById('username-input').value;
+    const password = document.getElementById('password-input').value;
+    const userInfo = {
+        username: username,
+        password: password
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(userInfo),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    fetch('/login', options).catch((err) => {
+        console.log(err);
+    });
     hideLoginModal();
+};
+
+const createAccount = () => { //todo use login() as example of how to do this
+
 };
 
 const search = () => {

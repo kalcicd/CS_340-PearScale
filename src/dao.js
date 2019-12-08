@@ -29,11 +29,11 @@ const reportPear = async (PID, description) => {
  * @param userInfo An object containing user data
  * @returns {Promise<any>} resolves the created account
  */
-const createAccount = async (userInfo) => { // lol plaintext passwords
+const createAccount = async (userInfo) => {
     const connection = connectDb();
     return await new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Users (Username, Password, Birthday, Email) VALUES (?)';
-        const bindVars = [[userInfo.username, userInfo.password, userInfo.birthday, userInfo.email]];
+        const sql = 'INSERT INTO Users (Username, hash, salt, Birthday, Email) VALUES (?)';
+        const bindVars = [[userInfo.username, userInfo.hash, userInfo.salt, userInfo.birthday, userInfo.email]];
         connection.query(sql, bindVars, (err, result) => {
             close(connection);
             if (err) {
@@ -47,15 +47,15 @@ const createAccount = async (userInfo) => { // lol plaintext passwords
 };
 
 /**
- * @name logIn
- * @param userInfo An object containing the user's login info
- * @returns {Promise<any>} resolves object of logged in user, undefined if incorrect login
+ * @name getUserByUsername
+ * @param userName user's username
+ * @returns {Promise<any>} resolves a user object
  */
-const logIn = async (userInfo) => {
+const getUserByUsername = async (userName) => {
     const connection = connectDb();
     return await new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM Users WHERE (Username = ? AND Password = ?)';
-        const sqlBinds = [userInfo.username, userInfo.password];
+        const sql = 'SELECT * FROM Users WHERE Username = ?';
+        const sqlBinds = [userName];
         connection.query(sql, sqlBinds, (err, result) => {
             close(connection);
             if (err) {
@@ -282,7 +282,7 @@ module.exports = {
     getFreshPears,
     searchPears,
     createAccount,
-    logIn,
+    getUserByUsername,
     ratePear,
     getAverageRating,
     reportPear,
