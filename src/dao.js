@@ -162,14 +162,13 @@ const getAverageRating = async (PID) => {
 /**
  * @name searchPears
  * @param search A search query
- * @returns {Promise<any>} returns a promise object that resolves with an array of newest pears
+ * @returns {Promise<any>} returns a promise object that resolves with an array of searched pears
  */
 const searchPears = async (search) => {
     const connection = connectDb();
     return await new Promise((resolve, reject) => {
         const sanitized = search.toLowerCase();
-        const sql = `SELECT PID, UID, Title, Description, Image, Date, Time
-        FROM (SELECT * FROM pearTags WHERE Tag LIKE '%${sanitized}%') as swag`;
+        const sql = `SELECT * FROM (SELECT * FROM pearTags WHERE Tag LIKE '%${sanitized}%') as swag`;
         connection.query(sql, (err, result) => {
             close(connection);
             if (err) {
