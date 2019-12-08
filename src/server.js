@@ -91,8 +91,6 @@ app.post('/createAccount', async (req, res) => {
         username: body.username,
         birthday: body.birthday,
         email: body.email,
-        hash: undefined,
-        salt: undefined,
     };
     hash({password: body.password}, async (err, pass, salt, hash) => {
         console.log('test1');
