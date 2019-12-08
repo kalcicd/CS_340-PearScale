@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js",
+    "start": "nodemon src/server.js",
     "build": "handlebars src/views/partials/pear.hbs -f src/public/pearTemplate.js --extension \"hbs\"",
     "prestart": "npm run build"
   },
@@ -27,10 +27,10 @@
     "mysql": "^2.17.1",
     "node": "^13.1.0",
     "lodash": "^4.17.15",
-    "uuid": "^3.3.3",
     "pbkdf2-password": "^1.2.1"
   },
   "devDependencies": {
-    "forever": "^1.0.0"
+    "forever": "^1.0.0",
+    "nodemon": "^2.0.1"
   }
 }
