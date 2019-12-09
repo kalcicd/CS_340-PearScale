@@ -1,6 +1,8 @@
-# NodeJS Web Application Template
-This repository contains source code that can be used as a template for building a Node.js web application using Express, Handlebars, and MySQL. You can also use Forever to host the service. Be sure to install the required dependencies by running the following command:
+# PearScale
+This repository contains source code for the website PearScale, the premier social media platform for rating pictures of your favorite fruit.
 
+# Running the Server
+First, install dependencies
 ```
 npm install
 ```
