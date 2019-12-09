@@ -8,6 +8,8 @@ const {
     searchPears,
     createPear,
     getPearById,
+    ratePear,
+    reportPear,
 } = require('./dao');
 
 const app = express();
@@ -66,6 +68,25 @@ app.post('/createPear', async (req, res) => {
         console.log(err);
     });
     res.end()
+});
+
+app.post('/ratePear', async (req, res) => {
+    if (!req.session.user) {
+        console.log('Not logged in');
+        res.end();
+    } else {
+        const {UID} = req.session.user;
+        const {PID, rating} = req.body;
+        const result = await ratePear(UID, PID, rating);
+        res.send(result);
+    }
+});
+
+app.post('/reportPear', async (req, res) => {
+    const {PID, description} = req.body;
+    const result = await reportPear(PID, description);
+    console.log(result);
+    res.end();
 });
 
 /* Commented out until pear page template is created
