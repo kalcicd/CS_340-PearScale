@@ -11,6 +11,8 @@ const {
     searchPears,
     createPear,
     getPearById,
+    ratePear,
+    reportPear,
     getUserByUsername,
     createAccount,
 } = require('./dao');
@@ -114,6 +116,33 @@ app.post('/createAccount', async (req, res) => {
     });
 });
 
+
+app.post('/ratePear', async (req, res) => {
+    if (!req.session.user) {
+        console.log('Not logged in');
+        res.end();
+    } else {
+        const {UID} = req.session.user;
+        const {PID, rating} = req.body;
+        const result = await ratePear(UID, PID, rating);
+        res.send(result);
+    }
+});
+
+app.post('/reportPear', async (req, res) => {
+    const {PID, description} = req.body;
+    const result = await reportPear(PID, description);
+    console.log(result);
+    res.end();
+});
+
+/* Commented out until pear page template is created
+app.get('/pears/:pid', async (req, res) => {
+    const PID = req.params.pid;
+    console.log(`== Got request for pear with pid = ${PID}`);
+    const result = await getPearById(PID).catch((err) => {
+        console.log(err); */
+
 app.post('/login', async (req, res) => {
     const user = await authenticate(req.body.username, req.body.password);
     if (!user) {
@@ -138,6 +167,7 @@ app.post('/logout', async (req, res) => {
     req.session.destroy(() => {
         console.log('== Logged out');
         res.redirect('/fresh');
+
     });
 });
 
