@@ -118,21 +118,22 @@ app.post('/createAccount', async (req, res) => {
 
 app.post('/ratePear', async (req, res) => {
     if (!req.session.user) {
-        console.log('Not logged in');
-        res.end();
+        res.status(401).send('Not logged in');
     } else {
         const {UID} = req.session.user;
         const {PID, rating} = req.body;
-        const result = await ratePear(UID, PID, rating);
-        res.send(result);
+        const result = await ratePear(UID, PID, rating).catch((err) => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+        res.status(201).send(result);
     }
 });
 
 app.post('/reportPear', async (req, res) => {
     const {PID, description} = req.body;
     const result = await reportPear(PID, description);
-    console.log(result);
-    res.end();
+    res.status(201).send(result);
 });
 
 app.post('/login', async (req, res) => {
@@ -140,14 +141,14 @@ app.post('/login', async (req, res) => {
     if (!user) {
         req.session.error = 'Authentication failed, please check your username and password.';
         console.log(req.session.error);
-        res.end();
+        res.status(401).send(req.session.error);
     } else {
         req.session.regenerate(() => {
             req.session.user = user;
             req.session.success = `== Authenticated as ${req.session.user.Username}`;
             console.log(req.session.success);
             req.session.save(() => {
-                res.redirect(`/user/${req.session.user.Username}`);
+                res.status(201).redirect(`/user/${req.session.user.Username}`);
             });
         });
     }

@@ -65,7 +65,7 @@ const hideLoginModal = () => {
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
 
-const login = () => {
+const login = async () => {
     const username = document.getElementById('username-input').value;
     const password = document.getElementById('password-input').value;
     const userInfo = {
@@ -75,11 +75,9 @@ const login = () => {
     const options = {
         method: 'POST',
         body: JSON.stringify(userInfo),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: {'Content-Type': 'application/json'}
     };
-    fetch('/login', options).catch((err) => {
+    await fetch('/login', options).catch((err) => {
         console.log(err);
     });
     hideLoginModal();
@@ -98,30 +96,64 @@ const search = () => {
 const showRatingModal = () => {
     document.getElementById("rating-modal").classList.remove("hidden");
     document.getElementById("modal-backdrop").classList.remove("hidden");
-}
+};
 
 const hideRatingModal = () => {
     document.getElementById("rating-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
-}
+};
 
-const postRating = () => {
-    hideRatingModal();
-}
+const postRating = async () => {
+    const pearRating = document.getElementById('pear-rating').value;
+    const pID = window.location.pathname.split('/')[2];
+    const newRating = {
+        PID: pID,
+        rating: pearRating,
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(newRating),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/ratePear', options).catch((err) => {
+        console.log(err);
+    });
+    if (response.status === 401) {
+        // do something because user is not authenticated
+    } else {
+        hideRatingModal();
+        window.location.reload();
+    }
+};
 
 const showReportModal = () => {
     document.getElementById("report-modal").classList.remove("hidden");
     document.getElementById("modal-backdrop").classList.remove("hidden");
-}
+};
 
 const hideReportModal = () => {
     document.getElementById("report-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
-}
+};
 
-const postReport = () => {
+const postReport = async () => {
+    const report_reason = document.getElementById('report-reason').value;
+    const pID = window.location.pathname.split('/')[2];
+    const newReport = {
+        PID: pID,
+        description: report_reason,
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(newReport),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/reportPear', options).catch((err) => {
+        console.log(err);
+    });
     hideReportModal();
-}
+    // todo: give some sort of visual confirmation that response was received, i.e. response.status = 201
+};
 
 window.addEventListener('DOMContentLoaded', function () {
 
