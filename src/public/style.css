@@ -5,6 +5,8 @@
   --button-active: #325D14;
 }
 
+/* HEADER */
+
 header {
   background-color: var(--header-green);
 }
@@ -104,6 +106,8 @@ a:focus {
   outline: none;
 }
 
+/* SMALL PEARS */
+
 .pear-container {
   margin: 15px 5%;
   display: flex;
@@ -183,6 +187,29 @@ a:focus {
   cursor: default;
 }
 
+/* BIG PEARS */
+
+.big-pear {
+  display: flex;
+}
+
+.big-pear-image-container {
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 40%;
+}
+
+.big-pear-image {
+  max-width: 100%;
+}
+
+.big-pear-info {
+  padding-left: 20px;
+  width: 50%;
+}
+
+/* PEAR BUTTON */
+
 #pear-icon {
   color: white;
 }
@@ -215,6 +242,8 @@ a:focus {
 #create-pear-button:focus {
   outline: none;
 }
+
+/* MODAL */
 
 #modal-backdrop {
   position: fixed;

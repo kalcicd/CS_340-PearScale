@@ -1,18 +1,22 @@
-<div class="big-pear-image-container">
-    <img class="big-pear-image" src="{{pearInfo.Image}}" title="{{pearInfo.Description}}">
-</div>
+<div class="big-pear">
+    
+    <div class="big-pear-image-container">
+        <img class="big-pear-image" src="{{pearInfo.Image}}" title="{{pearInfo.Description}}">
+    </div>
 
-<div class="big-pear-info">
-    <p class="big-pear-title">
-        {{pearInfo.Title}}
-    </p>
-    <p class="big-pear-description">
-        {{pearInfo.Description}}
-    </p>
-    <p class="pear-poster">
-        Posted by <a href="/users/{{pearInfo.Username}}">{{pearInfo.Username}}</a>
-    </p>
-    <p class="pear-rating">
-        Rated an average of {{Average}}/15 by [users] users
-    </p>
+    <div class="big-pear-info">
+        <h2 class="big-pear-title">
+            {{pearInfo.Title}}
+        </h2>
+        <p class="big-pear-description">
+            {{pearInfo.Description}}
+        </p>
+        <p class="big-pear-poster">
+            Posted by <a href="/users/{{pearInfo.Username}}">{{pearInfo.Username}}</a>
+        </p>
+        <p class="big-pear-rating">
+            Rated an average of {{Average}}/15 by [users] users
+        </p>
+    </div>
+
 </div>
