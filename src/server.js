@@ -161,14 +161,15 @@ app.post('/logout', async (req, res) => {
 });
 
 
-app.get('/pear/:pid(\\d+)', async (req, res) => {
+app.get('/pears/:pid(\\d+)', async (req, res) => {
     console.log('request received');
     const PID = req.params.pid;
     const pear = await getPearById(PID).catch((err) => console.log(err));
     if (!pear) {
         res.status(404).redirect('/404');
     } else {
-        res.status(200).render('pear', {perInfo: pear});
+        console.log({pearInfo: pear});
+        res.status(200).render('pears', {pearInfo: pear});
     }
 });
 
@@ -192,7 +193,7 @@ app.get('*', (req, res) => {
     res.send('YOU GOT LOST LOL');
 });
 
-const port = process.env.PORT || 6969;
+const port = process.env.PORT || 6968;
 
 
 app.listen(port, () => {
