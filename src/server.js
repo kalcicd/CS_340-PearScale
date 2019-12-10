@@ -163,7 +163,6 @@ app.post('/logout', async (req, res) => {
 app.get('/pears/:pid(\\d+)', async (req, res) => {
     const PID = req.params.pid;
     const pear = await getPearById(PID).catch((err) => console.log(err));
-    console.log(pear);
     if (!pear) {
         res.status(404).redirect('/404');
     } else {

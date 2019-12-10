@@ -208,6 +208,16 @@ a:focus {
   width: 50%;
 }
 
+.big-pear-rating-value {
+  color: var(--header-green);
+  font-size: 35px;
+  text-shadow:
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
+}
+
 /* PEAR BUTTON */
 
 #pear-icon {
