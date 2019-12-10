@@ -26,7 +26,7 @@ const hidePearModal = () => {
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
 
-const postPear = () => {
+const postPear = async () => {
     const image = document.getElementById('pear-image-input').value;
     const title = document.getElementById('pear-title-input').value;
     const description = document.getElementById('pear-description-input').value;
@@ -43,9 +43,12 @@ const postPear = () => {
         }
     };
     hidePearModal();
-    fetch('/createPear', options).catch((err) => {
+    const result = await fetch('/createPear', options).catch((err) => {
         console.log(err);
     });
+    if (result.status === 401) {
+        // todo: user not logged in
+    }
 };
 
 const showLoginModal = () => {
@@ -77,13 +80,16 @@ const login = async () => {
         body: JSON.stringify(userInfo),
         headers: {'Content-Type': 'application/json'}
     };
-    await fetch('/login', options).catch((err) => {
+    const response = await fetch('/login', options).catch((err) => {
         console.log(err);
     });
+    if (response.status === 401) {
+        // todo: authentication failed (incorrect username or password)
+    }
     hideLoginModal();
 };
 
-const createAccount = () => { //todo use login() as example of how to do this
+const createAccount = () => { // todo: use login() as example of how to do this
 
 };
 
@@ -104,11 +110,9 @@ const hideRatingModal = () => {
 };
 
 const postRating = async () => {
-    const pearRating = document.getElementById('pear-rating').value;
-    const pID = window.location.pathname.split('/')[2];
     const newRating = {
-        PID: pID,
-        rating: pearRating,
+        PID: window.location.pathname.split('/')[2],
+        rating: document.getElementById('pear-rating').value,
     };
     const options = {
         method: 'POST',
@@ -119,8 +123,9 @@ const postRating = async () => {
         console.log(err);
     });
     if (response.status === 401) {
-        // do something because user is not authenticated
-    } else {
+        // todo: do something because user is not authenticated
+    }
+    if (response.status === 201) {
         hideRatingModal();
         window.location.reload();
     }
@@ -137,11 +142,9 @@ const hideReportModal = () => {
 };
 
 const postReport = async () => {
-    const report_reason = document.getElementById('report-reason').value;
-    const pID = window.location.pathname.split('/')[2];
     const newReport = {
-        PID: pID,
-        description: report_reason,
+        PID: window.location.pathname.split('/')[2],
+        description: document.getElementById('report-reason').value,
     };
     const options = {
         method: 'POST',
@@ -151,28 +154,34 @@ const postReport = async () => {
     const response = await fetch('/reportPear', options).catch((err) => {
         console.log(err);
     });
-    hideReportModal();
+    if (response.status === 201) {
+        // todo: display report posted
+        hideReportModal();
+    } else {
+        // something went wrong
+    }
+
     // todo: give some sort of visual confirmation that response was received, i.e. response.status = 201
 };
 
 window.addEventListener('DOMContentLoaded', function () {
 
     //only add event listeners if button is loaded
-    if(document.getElementById("rate-pear-button")) {
+    if (document.getElementById("rate-pear-button")) {
         document.getElementById("rate-pear-button").addEventListener('click', showRatingModal);
         document.getElementById("rating-cancel-button").addEventListener('click', hideRatingModal);
         document.getElementById("rating-accept-button").addEventListener('click', postRating);
         document.getElementById("rating-close-button").addEventListener('click', hideRatingModal);
     }
 
-    if(document.getElementById("report-pear-button")) {
+    if (document.getElementById("report-pear-button")) {
         document.getElementById("report-pear-button").addEventListener('click', showReportModal);
         document.getElementById("report-cancel-button").addEventListener('click', hideReportModal);
         document.getElementById("report-accept-button").addEventListener('click', postReport);
         document.getElementById("report-close-button").addEventListener('click', hideReportModal);
     }
 
-    if(document.getElementById("create-pear-button")) {
+    if (document.getElementById("create-pear-button")) {
         document.getElementById("create-pear-button").addEventListener('click', showPearModal);
         document.getElementById("pear-cancel-button").addEventListener('click', hidePearModal);
         document.getElementById("pear-accept-button").addEventListener('click', postPear);
@@ -185,5 +194,5 @@ window.addEventListener('DOMContentLoaded', function () {
     document.getElementById("login-login-button").addEventListener('click', login);
     document.getElementById("login-close-button").addEventListener('click', hideLoginModal);
     document.getElementById("navbar-search-button").addEventListener('click', search);
-    
+
 });
