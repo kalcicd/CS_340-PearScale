@@ -15,6 +15,8 @@ const {
     reportPear,
     getUserByUsername,
     createAccount,
+    getPearsByUID,
+    getAverageRating,
 } = require('./dao');
 
 const app = express();
@@ -143,45 +145,54 @@ app.post('/login', async (req, res) => {
             req.session.user = user;
             req.session.success = `== Authenticated as ${req.session.user.Username}`;
             console.log(req.session.success);
-            console.log(req.session.user);
             req.session.save(() => {
-                res.end();
+                res.redirect(`/user/${req.session.user.Username}`);
             });
         });
     }
-
 });
 
 app.post('/logout', async (req, res) => {
     req.session.destroy(() => {
         console.log('== Logged out');
-        res.redirect('/fresh');
-
+        res.redirect('/');
     });
 });
 
 
-app.get('/pears/:pid(\\d+)', async (req, res) => {
-    console.log('request received');
+app.get('/pear/:pid(\\d+)', async (req, res) => {
     const PID = req.params.pid;
     const pear = await getPearById(PID).catch((err) => console.log(err));
     if (!pear) {
         res.status(404).redirect('/404');
     } else {
-        console.log({pearInfo: pear});
-        res.status(200).render('pears', {pearInfo: pear});
+        const sessionUser = req.session.user;
+        let isOwnedPear = false;
+        const avgRating = await getAverageRating(pear);
+        if (!sessionUser) {
+            isOwnedPear = false;
+        } else if (sessionUser.UID === pear.UID) {
+            isOwnedPear = true;
+        }
+        res.status(200).render('pear', {pearInfo: pear, averageRating: avgRating, ownedPear: isOwnedPear});
     }
 });
 
 app.get('/user/:username', async (req, res) => {
-    console.log('request received');
     const username = req.params.username;
     const user = await getUserByUsername(username).catch((err) => console.log(err));
-    console.log('user:', user);
     if (!user) {
         res.status(404).redirect('/404');
     } else {
-        res.status(200).render('user', {userInfo: user});
+        const sessionUser = req.session.user;
+        const userPears = await getPearsByUID(sessionUser.UID).catch((err) => console.log(err));
+        let isSelfPage = false;
+        if (!sessionUser) {
+            isSelfPage = false;
+        } else if (sessionUser.Username === user.Username){
+            isSelfPage = true;
+        }
+        res.status(200).render('user', {pears: userPears, userInfo: user, selfPage: isSelfPage});
     }
 
 

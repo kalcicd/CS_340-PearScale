@@ -203,6 +203,26 @@ const getPearById = async (id) => {
 };
 
 /**
+ * @name getPearsByUID
+ * @param UID User id
+ * @returns {Promise<any>} returns a promise object that resolves with the requested user's pears
+ */
+const getPearsByUID = async (UID) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Pears WHERE UID = ?';
+        connection.query(sql, [UID], (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
  * @name getFreshPears
  * @returns {Promise<any>} returns a promise object that resolves with an array of newest pears
  */
@@ -286,5 +306,6 @@ module.exports = {
     getAverageRating,
     reportPear,
     getPearById,
+    getPearsByUID,
 };
 
