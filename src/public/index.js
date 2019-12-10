@@ -95,17 +95,63 @@ const search = () => {
     window.location.replace(`/?search=${query}`);
 };
 
+const showRatingModal = () => {
+    document.getElementById("rating-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+}
+
+const hideRatingModal = () => {
+    document.getElementById("rating-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+}
+
+const postRating = () => {
+    hideRatingModal();
+}
+
+const showReportModal = () => {
+    document.getElementById("report-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+}
+
+const hideReportModal = () => {
+    document.getElementById("report-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+}
+
+const postReport = () => {
+    hideReportModal();
+}
+
 window.addEventListener('DOMContentLoaded', function () {
 
-    document.getElementById("create-pear-button").addEventListener('click', showPearModal);
-    document.getElementById("pear-cancel-button").addEventListener('click', hidePearModal);
-    document.getElementById("pear-accept-button").addEventListener('click', postPear);
-    document.getElementsByClassName("pear-close-button")[0].addEventListener('click', hidePearModal);
+    //only add event listeners if button is loaded
+    if(document.getElementById("rate-pear-button")) {
+        document.getElementById("rate-pear-button").addEventListener('click', showRatingModal);
+        document.getElementById("rating-cancel-button").addEventListener('click', hideRatingModal);
+        document.getElementById("rating-accept-button").addEventListener('click', postRating);
+        document.getElementById("rating-close-button").addEventListener('click', hideRatingModal);
+    }
 
+    if(document.getElementById("report-pear-button")) {
+        document.getElementById("report-pear-button").addEventListener('click', showReportModal);
+        document.getElementById("report-cancel-button").addEventListener('click', hideReportModal);
+        document.getElementById("report-accept-button").addEventListener('click', postReport);
+        document.getElementById("report-close-button").addEventListener('click', hideReportModal);
+    }
+
+    if(document.getElementById("create-pear-button")) {
+        document.getElementById("create-pear-button").addEventListener('click', showPearModal);
+        document.getElementById("pear-cancel-button").addEventListener('click', hidePearModal);
+        document.getElementById("pear-accept-button").addEventListener('click', postPear);
+        document.getElementById("pear-close-button").addEventListener('click', hidePearModal);
+    }
+
+    //these elements are always loaded so if statement is not needed
     document.getElementById("login-button").addEventListener('click', showLoginModal);
     document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
     document.getElementById("login-login-button").addEventListener('click', login);
-    document.getElementsByClassName("login-close-button")[0].addEventListener('click', hideLoginModal);
-
+    document.getElementById("login-close-button").addEventListener('click', hideLoginModal);
     document.getElementById("navbar-search-button").addEventListener('click', search);
+    
 });

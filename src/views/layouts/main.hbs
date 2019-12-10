@@ -11,9 +11,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.4.2/handlebars.runtime.js"></script>
     
-    <script src="index.js"></script>
-    <script src="dao.js"></script>
-    <script src="pearTemplate.js"></script>
+    <script src="/index.js"></script>
+    <script src="/dao.js"></script>
+    <script src="/pearTemplate.js"></script>
 
     {{!-- header is here since it will be everywhere on the site --}}
     <a href="/"><h1 class="site-title">PearScale</h1></a>
@@ -38,5 +38,31 @@
     {{{body}}}
 
 </body>
+
+<div id="modal-backdrop" class="hidden"></div>
+<div id="login-modal" class="hidden">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Login</h3>
+            <button type="button" class="modal-close-button" id="login-close-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="login-input-element">
+                <label for="username-input">Username</label>
+                <input type="text" id="username-input">
+            </div>
+            <div class="login-input-element">
+                <label for="password-input">Password</label>
+                <input type="password" id="password-input">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="modal-cancel-button" id="login-cancel-button">Cancel</button>
+            <button type="button" class="modal-accept-button" id="login-login-button">Login</button>
+        </div>
+    </div>
+</div>
 
 </html>
