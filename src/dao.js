@@ -140,20 +140,20 @@ const ratePear = async (UID, PID, rating) => {
 };
 
 /**
- * @name getAverageRating
+ * @name getRatingInfo
  * @param PID The PID of the pear
- * @returns {Promise<any>} resolves the average rating of pear
+ * @returns {Promise<any>} resolves the average rating of pear and number of ratings
  */
-const getAverageRating = async (PID) => {
+const getRatingInfo = async (PID) => {
     const connection = connectDb();
     return await new Promise((resolve, reject) => {
-        const sql = 'SELECT AVG(Score) AS average FROM Ratings WHERE PID = ?';
+        const sql = 'SELECT AVG(Score) AS average, COUNT(*) as numRatings FROM Ratings WHERE PID = ?';
         connection.query(sql, [PID], (err, result) => {
             close(connection);
             if (err) {
                 reject(err);
             } else {
-                resolve(result[0].average);
+                resolve(result[0]);
             }
         })
     });
@@ -303,7 +303,7 @@ module.exports = {
     createAccount,
     getUserByUsername,
     ratePear,
-    getAverageRating,
+    getRatingInfo,
     reportPear,
     getPearById,
     getPearsByUID,
