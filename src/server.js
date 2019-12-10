@@ -160,7 +160,7 @@ app.post('/logout', async (req, res) => {
 });
 
 
-app.get('/pear/:pid(\\d+)', async (req, res) => {
+app.get('/pears/:pid(\\d+)', async (req, res) => {
     const PID = req.params.pid;
     const pear = await getPearById(PID).catch((err) => console.log(err));
     if (!pear) {
@@ -168,17 +168,17 @@ app.get('/pear/:pid(\\d+)', async (req, res) => {
     } else {
         const sessionUser = req.session.user;
         let isOwnedPear = false;
-        const avgRating = await getAverageRating(pear);
+        const avgRating = await getAverageRating(pear.PID);
         if (!sessionUser) {
             isOwnedPear = false;
         } else if (sessionUser.UID === pear.UID) {
             isOwnedPear = true;
         }
-        res.status(200).render('pear', {pearInfo: pear, averageRating: avgRating, ownedPear: isOwnedPear});
+        res.status(200).render('pears', {pearInfo: pear, averageRating: avgRating, ownedPear: isOwnedPear});
     }
 });
 
-app.get('/user/:username', async (req, res) => {
+app.get('/users/:username', async (req, res) => {
     const username = req.params.username;
     const user = await getUserByUsername(username).catch((err) => console.log(err));
     if (!user) {
@@ -192,7 +192,7 @@ app.get('/user/:username', async (req, res) => {
         } else if (sessionUser.Username === user.Username){
             isSelfPage = true;
         }
-        res.status(200).render('user', {pears: userPears, userInfo: user, selfPage: isSelfPage});
+        res.status(200).render('users', {pears: userPears, userInfo: user, selfPage: isSelfPage});
     }
 
 
