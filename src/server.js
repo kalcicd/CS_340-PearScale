@@ -160,21 +160,23 @@ app.post('/logout', async (req, res) => {
 });
 
 
-app.get('/pear/:pid(\\d+)', async (req, res) => {
+app.get('/pears/:pid(\\d+)', async (req, res) => {
+    console.log("Got request for pear page...");
     const PID = req.params.pid;
     const pear = await getPearById(PID).catch((err) => console.log(err));
+    console.log(pear);
     if (!pear) {
         res.status(404).redirect('/404');
     } else {
         const sessionUser = req.session.user;
         let isOwnedPear = false;
-        const avgRating = await getAverageRating(pear);
+        //const avgRating = await getAverageRating(pear);
         if (!sessionUser) {
             isOwnedPear = false;
         } else if (sessionUser.UID === pear.UID) {
             isOwnedPear = true;
         }
-        res.status(200).render('pear', {pearInfo: pear, averageRating: avgRating, ownedPear: isOwnedPear});
+        res.status(200).render('pears', {pearInfo: pear, /*averageRating: avgRating,*/ ownedPear: isOwnedPear});
     }
 });
 
