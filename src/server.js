@@ -78,10 +78,6 @@ app.get('/ripe', async (req, res) => {
     res.render('home', {pears: ripePears});
 });
 
-app.get('*', (req, res) => {
-    res.send('YOU GOT LOST LOL');
-});
-
 app.post('/createPear', async (req, res) => {
     if (req.session.user) {
         const body = req.body;
@@ -136,13 +132,6 @@ app.post('/reportPear', async (req, res) => {
     res.end();
 });
 
-/* Commented out until pear page template is created
-app.get('/pears/:pid', async (req, res) => {
-    const PID = req.params.pid;
-    console.log(`== Got request for pear with pid = ${PID}`);
-    const result = await getPearById(PID).catch((err) => {
-        console.log(err); */
-
 app.post('/login', async (req, res) => {
     const user = await authenticate(req.body.username, req.body.password);
     if (!user) {
@@ -172,21 +161,35 @@ app.post('/logout', async (req, res) => {
 });
 
 
-app.get('/pear/:pid', async (req, res) => {
+app.get('/pear/:pid(\\d+)', async (req, res) => {
+    console.log('request received');
     const PID = req.params.pid;
-    const result = await getPearById(PID).catch((err) => console.log(err));
-    res.send(`On user page ${PID}`);
-    // res.render('pear', {pearInfo: result});
+    const pear = await getPearById(PID).catch((err) => console.log(err));
+    if (!pear) {
+        res.status(404).redirect('/404');
+    } else {
+        res.status(200).render('pear', {perInfo: pear});
+    }
 });
 
-app.get('/user/:uid', async (req, res) => {
-    const UID = req.params.uid;
-    res.send(`On user page ${UID}`);
-    /*
-    const user = await getUserByUID(UID).catch((err) => console.log(err));
-    const pears = await getPearByUID(UID).catch((err) => console.log(err));;
-    res.render('user', {userInfo: result, userPears: pears});
-     */
+app.get('/user/:username', async (req, res) => {
+    console.log('request received');
+    const username = req.params.username;
+    const user = await getUserByUsername(username).catch((err) => console.log(err));
+    console.log('user:', user);
+    if (!user) {
+        res.status(404).redirect('/404');
+    } else {
+        res.status(200).render('user', {userInfo: user});
+    }
+
+
+    // const pears = await getPearByUID(UID).catch((err) => console.log(err));
+    // res.render('user', {userInfo: result, userPears: pears});
+});
+
+app.get('*', (req, res) => {
+    res.send('YOU GOT LOST LOL');
 });
 
 const port = process.env.PORT || 6969;
