@@ -16,7 +16,7 @@ const {
     getUserByUsername,
     createAccount,
     getPearsByUID,
-    getAverageRating,
+    getRatingInfo,
 } = require('./dao');
 
 const app = express();
@@ -168,13 +168,14 @@ app.get('/pears/:pid(\\d+)', async (req, res) => {
     } else {
         const sessionUser = req.session.user;
         let isOwnedPear = false;
-        const avgRating = await getAverageRating(pear.PID);
+        const ratingInfo = await getRatingInfo(pear.PID);
         if (!sessionUser) {
             isOwnedPear = false;
         } else if (sessionUser.UID === pear.UID) {
             isOwnedPear = true;
         }
-        res.status(200).render('pears', {pearInfo: pear, averageRating: avgRating, ownedPear: isOwnedPear});
+        // avg rating: ratings.average  num ratings: ratings.numRatings
+        res.status(200).render('pears', {pearInfo: pear, ratings: ratingInfo, ownedPear: isOwnedPear});
     }
 });
 
