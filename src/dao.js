@@ -68,6 +68,27 @@ const getUserByUsername = async (userName) => {
 };
 
 /**
+ * @name getUserByUID
+ * @param UID user id
+ * @returns {Promise<any>} resolves a user object
+ */
+const getUserByUID = async (UID) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Users WHERE UID = ?';
+        const sqlBinds = [UID];
+        connection.query(sql, sqlBinds, (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result[0]);
+            }
+        });
+    });
+};
+
+/**
  * @name deletePear
  * @param PID The PID of the pear to be deleted
  */
@@ -302,6 +323,7 @@ module.exports = {
     searchPears,
     createAccount,
     getUserByUsername,
+    getUserByUID,
     ratePear,
     getRatingInfo,
     reportPear,

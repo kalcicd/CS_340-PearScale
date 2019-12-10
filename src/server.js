@@ -14,6 +14,7 @@ const {
     ratePear,
     reportPear,
     getUserByUsername,
+    getUserByUID,
     createAccount,
     getPearsByUID,
     getRatingInfo,
@@ -166,6 +167,8 @@ app.get('/pears/:pid(\\d+)', async (req, res) => {
     if (!pear) {
         res.status(404).redirect('/404');
     } else {
+        const {Username} = await getUserByUID(pear.UID); // probably could have designed our tables better lol
+        pear.Username = Username;
         const sessionUser = req.session.user;
         let isOwnedPear = false;
         const ratingInfo = await getRatingInfo(pear.PID);
