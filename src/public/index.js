@@ -176,7 +176,7 @@ const hideDeleteModal = () => {
 
 const deletePear = () => {
     hideDeleteModal();
-}
+};
 
 window.addEventListener('DOMContentLoaded', function () {
 
