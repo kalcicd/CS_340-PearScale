@@ -174,7 +174,36 @@ const hideDeleteModal = () => {
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
 
-const deletePear = () => {
+const deletePear = async () => {
+    let confirmed = false;
+    if (confirm('Are you sure you want to delete this pear? This action cannot be undone')){
+        if (confirm("pls don't go :(")){
+            if (confirm("I don't know if you're thinking this one through all the way.")){
+                if (confirm('Fine then. Be that way.')){
+                    confirmed = true;
+                }
+            }
+        }
+    }
+    if (confirmed) {
+        const deleteInfo = {PID: window.location.pathname.split('/')[2]};
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(deleteInfo),
+            headers: {'Content-Type': 'application/json'},
+        };
+        const response = await fetch('/deletePear', options).catch((err) => console.log(err));
+        const {status} = response;
+        if (status === 200) {
+            alert('Pear has been deleted');
+            window.location.replace('/');
+        } else if (status === 401) {
+            console.log('You are unauthorized. GTFO')
+            // probably do nothing if unauthorized, bc delete button shouldn't even be visible is user is logged in
+        } else if (status === 500) {
+            alert('An error occurred when attempting to delete this pear. Try again later');
+        }
+    }
     hideDeleteModal();
 };
 

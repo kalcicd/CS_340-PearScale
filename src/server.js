@@ -140,12 +140,15 @@ app.post('/createAccount', async (req, res) => {
         if (err) throw err;
         newAccount['salt'] = salt;
         newAccount['hash'] = hash;
-        await createAccount(newAccount).catch((err) => {
+        const result = await createAccount(newAccount).catch((err) => {
             if (err.errno === 1062) {
                 console.log('Username is already taken');
                 res.status(409).send();
             } else res.status(500).send();
         });
+        if (result) {
+            res.status(201).send(result);
+        }
         res.redirect('/');
     });
 });
