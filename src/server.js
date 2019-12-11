@@ -18,6 +18,7 @@ const {
     createAccount,
     getPearsByUID,
     getRatingInfo,
+    deletePear,
 } = require('./dao');
 
 const app = express();
@@ -99,6 +100,30 @@ app.post('/createPear', async (req, res) => {
         res.status(201).redirect(`/pears/${PID}`);
     } else {
         console.log('user is undefined:');
+        res.status(401).send();
+    }
+});
+
+app.post('/deletePear', async (req, res) => {
+    const user = req.session.user;
+    if (user) {
+        const body = req.body;
+        const {UID} = await getPearById(body.PID).catch((err) => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+        if (user.UID === UID) {
+            const result = await deletePear(body.PID).catch((err) => {
+                console.log(err);
+                res.status(500).send(err);
+            });
+            res.status(200).send(result);
+        } else {
+            console.log('unauthorized');
+            res.status(401).send();
+        }
+    } else {
+        console.log('no user logged in:');
         res.status(401).send();
     }
 });
@@ -204,7 +229,7 @@ app.get('/users/:username', async (req, res) => {
         res.status(404).redirect('/404');
     } else {
         const sessionUser = req.session.user;
-        const userPears = await getPearsByUID(sessionUser.UID).catch((err) => console.log(err));
+        const userPears = await getPearsByUID(user.UID).catch((err) => console.log(err));
         let isSelfPage = false;
         if (!sessionUser) {
             isSelfPage = false;
