@@ -64,8 +64,46 @@
         </div>
 
         <div class="modal-footer">
+            <button type="button" id="create-account-button">Create Account</button>
             <button type="button" id="login-cancel-button">Cancel</button>
             <button type="button" id="login-login-button">Login</button>
+        </div>
+    </div>
+</div>
+
+<div id="create-account-modal" class="hidden">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Create Account</h3>
+            <button type="button" class="create-account-close-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="create-account-input-element">
+                <label for="ca-username-input">Username</label>
+                <input type="text" id="ca-username-input">
+            </div>
+            <div class="create-account-input-element">
+                <label for="ca-password-input">Password</label>
+                <input type="password" id="ca-password-input">
+            </div>
+            <div class="create-account-input-element">
+                <label for="ca-password-confirm-input">Confirm Password</label>
+                <input type="password" id="ca-password-confirm-input">
+            </div>
+            <div class="create-account-input-element">
+                <label for="ca-email-input">Email</label>
+                <input type="text" id="ca-email-input">
+            </div>
+            <div class="create-account-input-element">
+                <label for="ca-birthday-input">Birthday</label>
+                <input type="date" id="ca-birthday-input">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" id="create-account-cancel-button">Cancel</button>
+            <button type="button" id="create-account-confirm-button">Create Account</button>
         </div>
     </div>
 </div>

@@ -236,7 +236,7 @@ a:focus {
   overflow: scroll;
 }
 
-#login-modal {
+#login-modal, #create-account-modal {
   position: fixed;
   top: 0;
   bottom: 0;

@@ -186,7 +186,7 @@ app.get('/users/:username', async (req, res) => {
         res.status(404).redirect('/404');
     } else {
         const sessionUser = req.session.user;
-        const userPears = await getPearsByUID(sessionUser.UID).catch((err) => console.log(err));
+        const userPears = await getPearsByUID(user.UID).catch((err) => console.log(err));
         let isSelfPage = false;
         if (!sessionUser) {
             isSelfPage = false;

@@ -85,8 +85,60 @@ const login = () => {
     hideLoginModal();
 };
 
-const createAccount = () => { //todo use login() as example of how to do this
+const showCreateAccountModal = () => {
+    hideLoginModal();
+    document.getElementById("create-account-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
 
+const hideCreateAccountModal = () => {
+    const inputs = document.getElementsByClassName("create-account-input-element");
+
+    for (ii = 0; ii < inputs.length; ii++) {
+        const content = inputs[ii].querySelector('input, textarea');
+        content.value = '';
+    }
+
+    document.getElementById("create-account-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
+const createAccount = async () => {
+    const username = document.getElementById('ca-username-input').value;
+    const password = document.getElementById('ca-password-input').value;
+    const email = document.getElementById('ca-email-input').value;
+    const birthday = document.getElementById('ca-birthday-input').value;
+    console.log("===Birthday:" + birthday);
+    if(password != document.getElementById('ca-password-confirm-input').value) {
+        console.log("passwords do not match");
+        //todo: dont allow this
+    }
+    const userInfo = {
+        username: username,
+        password: password,
+        email: email,
+        birthday: birthday
+    };
+
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(userInfo),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const newUser = await(fetch('/createAccount', options).catch((err) => {
+        console.log(err);
+    }));
+
+    if(newUser.status === 200) {
+        fetch('/login', options).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    hideCreateAccountModal();
 };
 
 const search = () => {
@@ -106,6 +158,11 @@ window.addEventListener('DOMContentLoaded', function () {
     document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
     document.getElementById("login-login-button").addEventListener('click', login);
     document.getElementsByClassName("login-close-button")[0].addEventListener('click', hideLoginModal);
+
+    document.getElementById("create-account-button").addEventListener('click', showCreateAccountModal);
+    document.getElementById("create-account-cancel-button").addEventListener('click', hideCreateAccountModal);
+    document.getElementById("create-account-confirm-button").addEventListener('click', createAccount);
+    document.getElementsByClassName("create-account-close-button")[0].addEventListener('click', hideCreateAccountModal);
 
     document.getElementById("navbar-search-button").addEventListener('click', search);
 });
