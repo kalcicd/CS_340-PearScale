@@ -22,8 +22,12 @@
         <ul class="navlist">
             <li class="navitem navlink active"><a href="/fresh">Fresh</a></li>
             <li class="navitem navlink"><a href="/ripe">Ripe</a></li>
-            <li class="navitem navlink" id="login-button"><a href="#">Login</a></li>
-
+            {{#if sessionUser}} {{!-- if user is logged in replace login button with a link to user page --}}
+                <li class="navitem navlink" id="account-button"><a href="/users/{{sessionUser.Username}}">{{sessionUser.Username}}</a></li>
+            {{/if}}
+            {{#unless sessionUser}}
+                <li class="navitem navlink" id="login-button"><a href="#">Login</a></li>
+            {{/unless}}
             <li class="navitem navbar-search">
             <input type="text" id="navbar-search-input" placeholder="Find the pearfect pear...">
             <button type="button" id="navbar-search-button"><a href="#"></a><i class="fas fa-search"></i></button>

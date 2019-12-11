@@ -1,8 +1,18 @@
 <div class="user-container">
-    <h1>welcome to the home of {{userInfo.Username}}!</h1>
-    
+    {{#if selfPage}}
+        <h1>welcome home {{userInfo.Username}}!</h1>
+    {{/if}}
+    {{#unless selfPage}}
+        <h1>welcome to the home of {{userInfo.Username}}!</h1>
+    {{/unless}}
     <div class="pear-container">
-        <h2>Pears posted by {{userInfo.Username}}:</h2>
+        {{#if selfPage}}
+            <h2>Your pears:</h2>
+        {{/if}}
+        {{#unless selfPage}}
+            <h2>Pears posted by {{userInfo.Username}}:</h2>
+        {{/unless}}
+        
         {{#each pears}}
             {{> pear}}
         {{/each}}

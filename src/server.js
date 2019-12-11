@@ -44,6 +44,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Setup json data handling
 app.use(express.json());
 
+const isLoggedIn = () => {
+    if(req.session.user === null) {
+        return false;
+    }
+    return true;
+}
+
 const authenticate = async (name, pass) => await new Promise(async (resolve, reject) => {
     const user = await getUserByUsername(name).catch((err) => console.log(err));
     if (!user) {
@@ -59,14 +66,16 @@ const authenticate = async (name, pass) => await new Promise(async (resolve, rej
 
 app.get('/', async (req, res) => {
     const search = req.query.search;
+    const sessionUser = req.session.user;
+    console.log(sessionUser);
     if (search) {
         console.log(`== Searching ${search} pears`);
         const results = await searchPears(search).catch((err) => console.log(err));
-        res.render('home', {pears: results});
+        res.render('home', {pears: results, sessionUser: sessionUser});
     } else {
         console.log('== Got request for the home page');
         const freshPears = await getFreshPears().catch((err) => console.log(err));
-        res.render('home', {pears: freshPears});
+        res.render('home', {pears: freshPears, sessionUser: sessionUser});
     }
 });
 
@@ -76,7 +85,9 @@ app.get('/fresh', async (req, res) => {
         console.log(err);
         res.status(500).end();
     });
-    res.render('home', {pears: freshPears});
+    const sessionUser = req.session.user;
+    console.log(sessionUser);
+    res.render('home', {pears: freshPears, sessionUser: sessionUser});
 });
 
 app.get('/ripe', async (req, res) => {
@@ -85,7 +96,9 @@ app.get('/ripe', async (req, res) => {
         console.log(err);
         res.status(500).end();
     });
-    res.status(200).render('home', {pears: ripePears});
+    const sessionUser = req.session.user;
+    console.log(sessionUser);
+    res.status(200).render('home', {pears: ripePears, sessionUser: sessionUser});
 });
 
 app.post('/createPear', async (req, res) => {
@@ -221,7 +234,7 @@ app.get('/pears/:pid(\\d+)', async (req, res) => {
             isOwnedPear = true;
         }
         // avg rating: ratings.average  num ratings: ratings.numRatings
-        res.status(200).render('pears', {pearInfo: pear, ratings: ratingInfo, ownedPear: isOwnedPear});
+        res.status(200).render('pears', {pearInfo: pear, ratings: ratingInfo, ownedPear: isOwnedPear, sessionUser: sessionUser});
     }
 });
 
@@ -239,7 +252,7 @@ app.get('/users/:username', async (req, res) => {
         } else if (sessionUser.Username === user.Username){
             isSelfPage = true;
         }
-        res.status(200).render('users', {pears: userPears, userInfo: user, selfPage: isSelfPage});
+        res.status(200).render('users', {pears: userPears, userInfo: user, selfPage: isSelfPage, sessionUser: sessionUser});
     }
 
 
@@ -251,7 +264,7 @@ app.get('*', (req, res) => {
     res.send('YOU GOT LOST LOL');
 });
 
-const port = process.env.PORT || 6965;
+const port = process.env.PORT || 6969;
 
 
 app.listen(port, () => {
