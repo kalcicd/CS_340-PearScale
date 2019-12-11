@@ -190,7 +190,10 @@ const searchPears = async (search) => {
     return await new Promise((resolve, reject) => {
         const sanitized = search.toLowerCase();
         const sql = 
-        `SELECT * FROM (SELECT * FROM highestRatedPears WHERE Title LIKE '%${sanitized}%') as swag`;
+        `SELECT * FROM (SELECT * FROM highestRatedPears WHERE Title LIKE '%${sanitized}%' 
+        OR Username LIKE '%${sanitized}%'
+        OR Description LIKE '%${sanitized}%'
+        OR Average LIKE '%${sanitized}%') as swag`;
         connection.query(sql, (err, result) => {
             close(connection);
             if (err) {
