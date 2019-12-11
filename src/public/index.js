@@ -155,7 +155,7 @@ const postReport = async () => {
         console.log(err);
     });
     if (response.status === 201) {
-        // todo: display report posted
+        alert("Report submitted! Thank you for keeping PearScale safe from bad pears.");
         hideReportModal();
     } else {
         // something went wrong
@@ -163,6 +163,20 @@ const postReport = async () => {
 
     // todo: give some sort of visual confirmation that response was received, i.e. response.status = 201
 };
+
+const showDeleteModal = () => {
+    document.getElementById("delete-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+const hideDeleteModal = () => {
+    document.getElementById("delete-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
+const deletePear = () => {
+    hideDeleteModal();
+}
 
 window.addEventListener('DOMContentLoaded', function () {
 
@@ -179,6 +193,13 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("report-cancel-button").addEventListener('click', hideReportModal);
         document.getElementById("report-accept-button").addEventListener('click', postReport);
         document.getElementById("report-close-button").addEventListener('click', hideReportModal);
+    }
+
+    if (document.getElementById("delete-pear-button")) {
+        document.getElementById("delete-pear-button").addEventListener('click', showDeleteModal);
+        document.getElementById("delete-cancel-button").addEventListener('click', hideDeleteModal);
+        document.getElementById("delete-accept-button").addEventListener('click', deletePear);
+        document.getElementById("delete-close-button").addEventListener('click', hideDeleteModal);
     }
 
     if (document.getElementById("create-pear-button")) {

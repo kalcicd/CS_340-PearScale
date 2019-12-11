@@ -315,7 +315,7 @@ a:focus {
   background-color: rgba(0, 0, 0, 0.85);
 }
 
-#create-pear-modal, #login-modal, #rating-modal, #report-modal{
+#create-pear-modal, #login-modal, #rating-modal, #report-modal, #delete-modal{
   position: fixed;
   top: 0;
   bottom: 0;
@@ -395,7 +395,7 @@ a:focus {
   padding: 10px 10px 20px 10px;
 }
 
-.modal-footer button, .cancel-button {
+.modal-footer button, .modal-cancel-button {
   font-size: 20px;
   background-color: #fff;
   color: #333;
