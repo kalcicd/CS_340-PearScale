@@ -207,7 +207,17 @@ const deletePear = async () => {
     hideDeleteModal();
 };
 
+//When DOM is loaded do all this stuff
 window.addEventListener('DOMContentLoaded', function () {
+
+    //set active navlink
+    const navlinks = document.getElementsByClassName("navitem navlink");
+    for(ii = 0; ii < navlinks.length; ii++) {
+        if(navlinks[ii].firstChild.pathname === window.location.pathname) {
+            navlinks[ii].classList.value="navitem navlink active";
+            break;
+        }
+    }
 
     //only add event listeners if button is loaded
     if (document.getElementById("rate-pear-button")) {
