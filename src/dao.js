@@ -68,6 +68,27 @@ const getUserByUsername = async (userName) => {
 };
 
 /**
+ * @name getUserByUID
+ * @param UID user id
+ * @returns {Promise<any>} resolves a user object
+ */
+const getUserByUID = async (UID) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Users WHERE UID = ?';
+        const sqlBinds = [UID];
+        connection.query(sql, sqlBinds, (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result[0]);
+            }
+        });
+    });
+};
+
+/**
  * @name deletePear
  * @param PID The PID of the pear to be deleted
  */
@@ -94,6 +115,7 @@ const deletePear = async (PID) => {
  * @param rating A numeric rating of the pear
  */
 const ratePear = async (UID, PID, rating) => {
+    console.log(UID, PID, rating);
     const connection = connectDb();
     const rated = await new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM Ratings WHERE (PID = ? AND UID = ?)';
@@ -125,7 +147,6 @@ const ratePear = async (UID, PID, rating) => {
     } else {
         return await new Promise((resolve, reject) => {
             const sql = `INSERT INTO Ratings (Score, PID, UID) VALUES (?)`;
-            const sqlBinds = [rating, PID, UID];
             connection.query(sql, [sqlBinds], (err, result) => {
                 close(connection);
                 if (err) {
@@ -302,6 +323,7 @@ module.exports = {
     searchPears,
     createAccount,
     getUserByUsername,
+    getUserByUID,
     ratePear,
     getRatingInfo,
     reportPear,

@@ -13,13 +13,13 @@
     {{/each}}
 </main>
 
-<div id="modal-backdrop" class="hidden"></div>
+
 <div id="create-pear-modal" class="hidden">
     <div class="modal-dialog">
 
         <div class="modal-header">
             <h3>Post a Pear</h3>
-            <button type="button" class="pear-close-button">&times;</button>
+            <button type="button" class="modal-close-button" id="pear-close-button">&times;</button>
         </div>
 
         <div class="modal-body">
@@ -38,34 +38,9 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" id="pear-cancel-button">Cancel</button>
-            <button type="button" id="pear-accept-button">Post</button>
+            <button type="button" class="modal-cancel-button" id="pear-cancel-button">Cancel</button>
+            <button type="button" class="modal-accept-button" id="pear-accept-button">Post</button>
         </div>
 
-    </div>
-</div>
-
-<div id="login-modal" class="hidden">
-    <div class="modal-dialog">
-        <div class="modal-header">
-            <h3>Login</h3>
-            <button type="button" class="login-close-button">&times;</button>
-        </div>
-
-        <div class="modal-body">
-            <div class="login-input-element">
-                <label for="username-input">Username</label>
-                <input type="text" id="username-input">
-            </div>
-            <div class="login-input-element">
-                <label for="password-input">Password</label>
-                <input type="password" id="password-input">
-            </div>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" id="login-cancel-button">Cancel</button>
-            <button type="button" id="login-login-button">Login</button>
-        </div>
     </div>
 </div>
