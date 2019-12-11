@@ -251,7 +251,7 @@ app.get('*', (req, res) => {
     res.send('YOU GOT LOST LOL');
 });
 
-const port = process.env.PORT || 6967;
+const port = process.env.PORT || 6965;
 
 
 app.listen(port, () => {

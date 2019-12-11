@@ -1,1 +1,11 @@
-hello world
+<div class="user-container">
+    <h1>welcome to the home of {{userInfo.Username}}!</h1>
+    
+    <div class="pear-container">
+        <h2>Pears posted by {{userInfo.Username}}:</h2>
+        {{#each pears}}
+            {{> pear}}
+        {{/each}}
+    </div>
+
+</div>
