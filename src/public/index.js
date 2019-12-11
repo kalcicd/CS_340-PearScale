@@ -62,6 +62,8 @@ const login = async () => {
     });
     if (response.status === 401) {
         // todo: authentication failed (incorrect username or password)
+    } else {
+        window.location.reload();
     }
     hideLoginModal();
 };
@@ -82,21 +84,9 @@ const logout = async () => {
     if (response.status === 401) {
         // todo: authentication failed (incorrect username or password)
     } else {
-        
+        window.location.reload();
     }
 }
-
-const showCreateAccountModal = () => {
-    hideLoginModal();
-    document.getElementById("create-account-modal").classList.remove("hidden");
-    document.getElementById("modal-backdrop").classList.remove("hidden");
-};
-
-const hideCreateAccountModal = () => {
-    clearInputs();
-    document.getElementById("create-account-modal").classList.add("hidden");
-    document.getElementById("modal-backdrop").classList.add("hidden");
-};
 
 const createAccount = async () => {
     const username = document.getElementById('ca-username-input').value;
@@ -127,14 +117,32 @@ const createAccount = async () => {
         console.log(err);
     }));
 
-    if(newUser.status === 200) {
-        fetch('/login', options).catch((err) => {
+    if(newUser.status === 201) {
+        const response = await(fetch('/login', options).catch((err) => {
             console.log(err);
-        });
+        }));
+        if(response.status === 401) {
+            console.log("cant login for some reason. sucks to be you");
+        } else {
+            window.location.reload();
+        }
     }
-
     hideCreateAccountModal();
 };
+
+const showCreateAccountModal = () => {
+    hideLoginModal();
+    document.getElementById("create-account-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+const hideCreateAccountModal = () => {
+    clearInputs();
+    document.getElementById("create-account-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
+
 
 const search = () => {
     const query = document.getElementById("navbar-search-input").value;
