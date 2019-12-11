@@ -1,16 +1,26 @@
 <div class="user-container">
     {{#if selfPage}}
-        <h1>welcome home {{userInfo.Username}}!</h1>
+        <h1 class="user-line1">welcome home <p class="user-name">{{userInfo.Username}}</p></h1>
     {{/if}}
     {{#unless selfPage}}
-        <h1>welcome to the home of {{userInfo.Username}}!</h1>
+        <h1 class="user-line1">welcome to the home of <p class="user-name">{{userInfo.Username}}</p></h1>
     {{/unless}}
     <div class="pear-container">
         {{#if selfPage}}
-            <h2>Your pears:</h2>
+            {{#if pears}}
+                <h2>Your pears:</h2>
+            {{/if}}
+            {{#unless pears}}
+                <h2>You haven't posted any pears yet :(</h2>
+            {{/unless}}
         {{/if}}
         {{#unless selfPage}}
-            <h2>Pears posted by {{userInfo.Username}}:</h2>
+            {{#if pears}}
+                <h2>Pears posted by {{userInfo.Username}}:</h2>
+            {{/if}}
+            {{#unless pears}}
+                <h2>You haven't posted any pears yet :(</h2>
+            {{/unless}}
         {{/unless}}
         
         {{#each pears}}

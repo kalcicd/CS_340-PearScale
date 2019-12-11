@@ -274,6 +274,33 @@ a:focus {
   background-color: red;
 }
 
+/* USER PAGE */
+
+.user-container {
+  margin-left: 10px;
+  display: inline;
+}
+
+.user-line1 {
+  margin-left: 10px;
+}
+
+.user-name {
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  padding: 0;
+  display: inline;
+  font-weight: bolder;
+  font-size: 40px;
+  color: var(--header-green);
+  text-shadow:
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
+}
+
 /* PEAR BUTTON */
 
 #pear-icon {

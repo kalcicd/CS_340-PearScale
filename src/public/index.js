@@ -1,15 +1,3 @@
-const createNewPear = (pimage, ptitle, pdescription, pauthor) => {
-    const pearContent = {
-        image: pimage,
-        title: ptitle,
-        description: pdescription,
-        author: pauthor,
-        rating: Math.floor(Math.random() * 1500) / 100
-    };
-    return pearHTML = Handlebars.templates.pear(pearContent);
-
-};
-
 const showPearModal = () => {
     document.getElementById("create-pear-modal").classList.remove("hidden");
     document.getElementById("modal-backdrop").classList.remove("hidden");
@@ -77,6 +65,26 @@ const login = async () => {
     }
     hideLoginModal();
 };
+
+const logout = async () => {
+    const username = document.getElementById('username-input').value;
+    const userInfo = {
+        username: username
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(userInfo),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/logout', options).catch((err) => {
+        console.log(err);
+    });
+    if (response.status === 401) {
+        // todo: authentication failed (incorrect username or password)
+    } else {
+        
+    }
+}
 
 const showCreateAccountModal = () => {
     hideLoginModal();
@@ -282,16 +290,24 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("pear-close-button").addEventListener('click', hidePearModal);
     }
 
-    //these elements are always loaded so if statement is not needed
-    document.getElementById("login-button").addEventListener('click', showLoginModal);
-    document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
-    document.getElementById("login-login-button").addEventListener('click', login);
-    document.getElementById("login-close-button").addEventListener('click', hideLoginModal);
+    if(document.getElementById("login-button")) {
+        document.getElementById("login-button").addEventListener('click', showLoginModal);
+        document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
+        document.getElementById("login-login-button").addEventListener('click', login);
+        document.getElementById("login-close-button").addEventListener('click', hideLoginModal);
+
+        document.getElementById("create-account-button").addEventListener('click', showCreateAccountModal);
+        document.getElementById("create-account-cancel-button").addEventListener('click', hideCreateAccountModal);
+        document.getElementById("create-account-confirm-button").addEventListener('click', createAccount);
+        document.getElementById("create-account-close-button").addEventListener('click', hideCreateAccountModal);
+    }
+
+    if(document.getElementById("logout-button")) {
+        document.getElementById("logout-button").addEventListener('click', logout);
+    }
+    
     document.getElementById("navbar-search-button").addEventListener('click', search);
 
-    document.getElementById("create-account-button").addEventListener('click', showCreateAccountModal);
-    document.getElementById("create-account-cancel-button").addEventListener('click', hideCreateAccountModal);
-    document.getElementById("create-account-confirm-button").addEventListener('click', createAccount);
-    document.getElementById("create-account-close-button").addEventListener('click', hideCreateAccountModal);
+    
 
 });
