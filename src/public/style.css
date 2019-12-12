@@ -457,7 +457,7 @@ a:focus {
 
 /* dropbox styling from https://www.filamentgroup.com/lab/select-css.html */
 
-#pear-rating {
+#pear-rating, #report-reason {
     display: block;
     font-size: 16px;
     font-family: sans-serif;
@@ -483,15 +483,15 @@ a:focus {
     margin-bottom: 5px;
 }
 
-#pear-rating::-ms-expand {
+#pear-rating::-ms-expand, #report-reason:-ms-expand {
     display: none;
 }
 
-#pear-rating:hover {
+#pear-rating:hover, #report-reason:hover {
     border-color: #888;
 }
 
-#pear-rating:focus {
+#pear-rating:focus, #report-reason:focus {
     border-color: #aaa;
     box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
     box-shadow: 0 0 0 3px -moz-mac-focusring;
@@ -499,7 +499,7 @@ a:focus {
     outline: none;
 }
 
-#pear-rating option {
+#pear-rating option, #report-reason option {
     font-weight: normal;
 }
 

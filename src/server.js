@@ -292,7 +292,7 @@ app.get('*', (req, res) => {
     res.send('YOU GOT LOST LOL');
 });
 
-const port = process.env.PORT || 6969;
+const port = process.env.PORT || 4269;
 
 
 app.listen(port, () => {

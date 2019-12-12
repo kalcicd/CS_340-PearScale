@@ -204,7 +204,7 @@ const postRating = async () => {
         console.log(err);
     });
     if (response.status === 401) {
-        // todo: do something because user is not authenticated
+        window.alert("Please log in to rate this pear");
     }
     if (response.status === 201) {
         hideRatingModal();
@@ -236,7 +236,7 @@ const postReport = async () => {
         console.log(err);
     });
     if (response.status === 201) {
-        alert("Report submitted! Thank you for keeping PearScale safe from bad pears.");
+        window.alert("Report submitted! Thank you for keeping PearScale safe from bad pears.");
         hideReportModal();
     } else {
         // something went wrong

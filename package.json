@@ -1,14 +1,13 @@
 {
-  "name": "nodejs-web-template",
-  "version": "0.1.0",
-  "description": "Template code for building a simple web application using Express, Handlebars, MySQL, and Forever",
+  "name": "PearScale",
+  "version": "1.0.0",
+  "description": "its pearscale baby",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
     "build": "handlebars src/views/partials/pear.hbs -f src/public/pearTemplate.js --extension \"hbs\"",
-    "prestart": "npm run build",
-    "nodemon start": "nodemon src/server.js"
+    "prestart": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -31,7 +30,6 @@
     "pbkdf2-password": "^1.2.1"
   },
   "devDependencies": {
-    "forever": "^1.0.0",
-    "nodemon": "^2.0.1"
+    "forever": "^1.0.0"
   }
 }
