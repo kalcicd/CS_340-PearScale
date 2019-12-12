@@ -288,6 +288,38 @@ const deletePear = async () => {
     hideDeleteModal();
 };
 
+const showTagModal = () => {
+    document.getElementById("tag-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+const hideTagModal = () => {
+    clearInputs();
+    document.getElementById("tag-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
+const tagPear = async () => {
+    const newTag = {
+        PID: window.location.pathname.split('/')[2],
+        tag: document.getElementById("pear-tag-input").value
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(newTag),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/tagPear', options).catch((err) => {
+        console.log(err);
+    });
+    if (response.status === 201) {
+        window.location.reload();
+        hideTagModal();
+    } else {
+        // something went wrong
+    }
+};
+
 
 const clearInputs = () => {
     const inputs = document.getElementsByClassName("modal-input-element");
@@ -354,7 +386,14 @@ window.addEventListener('DOMContentLoaded', function () {
     if(document.getElementById("logout-button")) {
         document.getElementById("logout-button").addEventListener('click', logout);
     }
-    
+
+    if(document.getElementById("tag-pear-button")) {
+        document.getElementById("tag-pear-button").addEventListener('click', showTagModal);
+        document.getElementById("tag-cancel-button").addEventListener('click', hideTagModal);
+        document.getElementById("tag-accept-button").addEventListener('click', tagPear);
+        document.getElementById("tag-close-button").addEventListener('click', hideTagModal);
+    }
+
     document.getElementById("navbar-search-button").addEventListener('click', search);
 
     

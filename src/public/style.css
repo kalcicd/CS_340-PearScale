@@ -252,7 +252,7 @@ a:focus {
   padding: 0;
   
   font-weight: bolder;
-  font-size: 20px;
+  font-size: 30px;
   color: var(--background-color);
   text-shadow:
 		-1px -1px 0 #000,
@@ -275,8 +275,36 @@ a:focus {
 }
 
 #delete-pear-button {
-  /* visibility: hidden; */
   background-color: red;
+}
+
+.big-pear-tag-container {
+  margin-left: 3px;
+}
+
+.big-pear-tag {
+  display: inline;
+}
+
+.tag {
+  background-color: var(--header-green);
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.tag:hover {
+  color: black;
+  background-color: var(--button-active);
+}
+
+.add-tag-container {
+  margin-top: 25px;
+}
+
+#tag-pear-button {
+  font-size: 20px;
+  padding: 5px;
+  background-color: var(--button-green);
 }
 
 /* USER PAGE */
@@ -355,8 +383,7 @@ a:focus {
 
 
 #create-pear-modal, #login-modal, #rating-modal, #report-modal, #delete-modal,
-#create-account-modal {
-
+#create-account-modal, #tag-modal {
   position: fixed;
   top: 0;
   bottom: 0;

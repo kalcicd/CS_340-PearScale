@@ -33,6 +33,23 @@
             {{/unless}}
 
         </div>
+
+        <div class="big-pear-tag-container">
+            {{#if tags}}
+                <h3>Tags:</h3>
+                {{#each tags}}
+                    <div class="big-pear-tag">
+                        <a class="tag" href="/?tag={{Tag}}">#{{Tag}}</a>
+                    </div>
+                {{/each}}
+            {{/if}}
+
+            {{#if ownedPear}}
+            <div class="add-tag-container">
+                <button class="big-pear-button" id="tag-pear-button">Add a tag</button>
+            </div>
+            {{/if}}
+        </div>
     </div>
 
     
@@ -110,6 +127,27 @@
         <div class="modal-footer">
             <button type="button" class="modal-cancel-button" id="delete-cancel-button">Cancel</button>
             <button type="button" class="modal-accept-button" id="delete-accept-button">DELETE</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="tag-modal" class="hidden">
+    <div class="modal-dialog">
+
+        <div class="modal-header">
+            <h3>Add tag</h3>
+            <button type="button" class="modal-close-button" id="tag-close-button">&times;</button>
+        </div>
+        
+        <div class="modal-input-element">
+            <label for="modal-input-element">Tag</label>
+            <input type="text" id="pear-tag-input">
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="modal-cancel-button" id="tag-cancel-button">Cancel</button>
+            <button type="button" class="modal-accept-button" id="tag-accept-button">Add tag</button>
         </div>
 
     </div>
