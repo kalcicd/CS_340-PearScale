@@ -3,8 +3,8 @@
 //       do not check in passwords!
 //
 module.exports = {
-  host: 'classmysql.engr.oregonstate.edu',
-  user: 'cs340_<username>',
-  password: 'XXXX',
-  database: 'cs340_<username>'
+    host: 'classmysql.engr.oregonstate.edu',
+    user: 'cs340_<username>',
+    password: 'XXXX',
+    database: 'cs340_<username>'
 };

@@ -1,5 +1,5 @@
 <div class="big-pear">
-    
+
     <div class="big-pear-image-container">
         <img class="big-pear-image" src="{{pearInfo.Image}}" title="{{pearInfo.Description}}">
     </div>
@@ -17,7 +17,8 @@
         <div class="big-pear-rating">
 
             {{#if ratings.average}}
-                Rated an average of <p class="big-pear-rating-value">{{ratings.average}}/15 </p> by <p class="big-pear-rating-value">{{ratings.numRatings}}</p> user(s)
+                Rated an average of <p class="big-pear-rating-value">{{ratings.average}}/15 </p> by <p
+                    class="big-pear-rating-value">{{ratings.numRatings}}</p> user(s)
             {{/if}}
             {{#unless ratings.average}}
                 This pear hasn't been rated yet! Be the first to <p class="big-pear-rating-value">rate it</p>
@@ -45,14 +46,14 @@
             {{/if}}
 
             {{#if ownedPear}}
-            <div class="add-tag-container">
-                <button class="big-pear-button" id="tag-pear-button">Add a tag</button>
-            </div>
+                <div class="add-tag-container">
+                    <button class="big-pear-button" id="tag-pear-button">Add a tag</button>
+                </div>
             {{/if}}
         </div>
     </div>
 
-    
+
 </div>
 
 <div id="rating-modal" class="hidden">
@@ -80,7 +81,7 @@
                 <option value="13">13</option>
                 <option value="14">14</option>
                 <option value="15">15</option>
-            </select> 
+            </select>
         </div>
 
         <div class="modal-footer">
@@ -105,7 +106,7 @@
                 <option value="report_notPear">This is not a pear</option>
                 <option value="report_nsfw">This pear is NSFW</option>
                 <option value="report_hatecrime">This pear commited a hate crime</option>
-            </select> 
+            </select>
         </div>
 
         <div class="modal-footer">
@@ -139,7 +140,7 @@
             <h3>Add tag</h3>
             <button type="button" class="modal-close-button" id="tag-close-button">&times;</button>
         </div>
-        
+
         <div class="modal-body">
             <div class="modal-input-element">
                 <label for="tag-input">Tag</label>

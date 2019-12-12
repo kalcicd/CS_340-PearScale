@@ -6,7 +6,7 @@ const connectDb = () => {
     // console.log('== Connecting to the database');
     const connection = createConnection(config);
     connection.connect();
-   //  console.log('== Database connected');
+    //  console.log('== Database connected');
     return connection;
 
 };
