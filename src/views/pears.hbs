@@ -15,12 +15,23 @@
             Posted by <a href="/users/{{pearInfo.Username}}">{{pearInfo.Username}}</a>
         </p>
         <div class="big-pear-rating">
-            Rated an average of <p class="big-pear-rating-value">{{ratings.average}}/15 </p> by <p class="big-pear-rating-value">{{ratings.numRatings}}</p> user(s)
+
+            {{#if ratings.average}}
+                Rated an average of <p class="big-pear-rating-value">{{ratings.average}}/15 </p> by <p class="big-pear-rating-value">{{ratings.numRatings}}</p> user(s)
+            {{/if}}
+            {{#unless ratings.average}}
+                This pear hasn't been rated yet! Be the first to <p class="big-pear-rating-value">rate it</p>
+            {{/unless}}
         </div>
         <div class="big-pear-buttons-container">
             <button class="big-pear-button" id="rate-pear-button">Rate</button>
-            <button class="big-pear-button" id="report-pear-button">Report</button>
-            <button class="big-pear-button" id="delete-pear-button">DELETE</button>
+            {{#if ownedPear}}
+                <button class="big-pear-button" id="delete-pear-button">DELETE</button>
+            {{/if}}
+            {{#unless ownedPear}}
+                <button class="big-pear-button" id="report-pear-button">Report</button>
+            {{/unless}}
+
         </div>
     </div>
 

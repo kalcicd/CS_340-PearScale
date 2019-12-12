@@ -1,27 +1,10 @@
-const createNewPear = (pimage, ptitle, pdescription, pauthor) => {
-    const pearContent = {
-        image: pimage,
-        title: ptitle,
-        description: pdescription,
-        author: pauthor,
-        rating: Math.floor(Math.random() * 1500) / 100
-    };
-    return pearHTML = Handlebars.templates.pear(pearContent);
-
-};
-
 const showPearModal = () => {
     document.getElementById("create-pear-modal").classList.remove("hidden");
     document.getElementById("modal-backdrop").classList.remove("hidden");
 };
 
 const hidePearModal = () => {
-    const inputs = document.getElementsByClassName("pear-input-element");
-    for (ii = 0; ii < inputs.length; ii++) {
-        const content = inputs[ii].querySelector('input, textarea');
-        content.value = '';
-    }
-
+    clearInputs();
     document.getElementById("create-pear-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
@@ -35,6 +18,10 @@ const postPear = async () => {
         title: title,
         description: description
     };
+    if(image == '' || title == '') {
+        window.alert("Pears need an image link and title");
+        return;
+    }
     const options = {
         method: 'POST',
         body: JSON.stringify(newPearAttributes),
@@ -42,13 +29,18 @@ const postPear = async () => {
             'Content-Type': 'application/json'
         }
     };
-    hidePearModal();
+
+
     const result = await fetch('/createPear', options).catch((err) => {
         console.log(err);
     });
     if (result.status === 401) {
-        // todo: user not logged in
+
+        window.alert("You must be logged in to post a pear");
+        return;
     }
+    hidePearModal();
+
 };
 
 const showLoginModal = () => {
@@ -57,13 +49,7 @@ const showLoginModal = () => {
 };
 
 const hideLoginModal = () => {
-    const inputs = document.getElementsByClassName("login-input-element");
-
-    for (ii = 0; ii < inputs.length; ii++) {
-        const content = inputs[ii].querySelector('input, textarea');
-        content.value = '';
-    }
-
+    clearInputs();
     document.getElementById("login-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
@@ -75,6 +61,10 @@ const login = async () => {
         username: username,
         password: password
     };
+    if(username == '' || password == '') {
+        window.alert("Please enter all fields");
+        return;
+    }
     const options = {
         method: 'POST',
         body: JSON.stringify(userInfo),
@@ -84,16 +74,94 @@ const login = async () => {
         console.log(err);
     });
     if (response.status === 401) {
-        // todo: authentication failed (incorrect username or password)
+        window.alert("Incorrect username or password");
+        return;
+    } else {
+        window.location.reload();
     }
     hideLoginModal();
 };
 
-const createAccount = () => { // todo: use login() as example of how to do this
+const logout = async () => {
+    const username = document.getElementById('username-input').value;
+    const userInfo = {
+        username: username
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(userInfo),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/logout', options).catch((err) => {
+        console.log(err);
+    });
+    if (response.status === 401) {
+        // todo: authentication failed (incorrect username or password)
+    } else {
+        window.location.reload();
+    }
+}
 
+const createAccount = async () => {
+    const username = document.getElementById('ca-username-input').value;
+    const password = document.getElementById('ca-password-input').value;
+    const email = document.getElementById('ca-email-input').value;
+    const birthday = document.getElementById('ca-birthday-input').value;
+    console.log("===Birthday:" + birthday);
+    if(password != document.getElementById('ca-password-confirm-input').value) {
+        window.alert("Passwords do not match!")
+        return;
+    }
+    if(username == '' || password == '' || email == '' || birthday == '') {
+        window.alert("Please enter all fields");
+        return;
+    }
+    const userInfo = {
+        username: username,
+        password: password,
+        email: email,
+        birthday: birthday
+    };
+
+
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(userInfo),
+        headers: {'Content-Type': 'application/json'}
+    };
+
+    const newUser = await(fetch('/createAccount', options).catch((err) => {
+        console.log(err);
+    }));
+
+    if(newUser.status === 201) {
+        const response = await(fetch('/login', options).catch((err) => {
+            console.log(err);
+        }));
+        if(response.status === 401) {
+            console.log("cant login for some reason. sucks to be you");
+        } else {
+            window.location.reload();
+        }
+    }
+    hideCreateAccountModal();
+};
+
+const showCreateAccountModal = () => {
+    hideLoginModal();
+    document.getElementById("create-account-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+
+const hideCreateAccountModal = () => {
+    clearInputs();
+    document.getElementById("create-account-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
 };
 
 const search = async () => {
+
     const query = document.getElementById("navbar-search-input").value;
     const searchInfo = {
         query: query
@@ -121,6 +189,18 @@ const hideRatingModal = () => {
     document.getElementById("rating-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
+
+
+const showRatingModal = () => {
+    document.getElementById("rating-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+const hideRatingModal = () => {
+    document.getElementById("rating-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
 
 const postRating = async () => {
     const newRating = {
@@ -220,6 +300,16 @@ const deletePear = async () => {
     hideDeleteModal();
 };
 
+
+const clearInputs = () => {
+    const inputs = document.getElementsByClassName("modal-input-element");
+
+    for (ii = 0; ii < inputs.length; ii++) {
+        const content = inputs[ii].querySelector('input, textarea');
+        content.value = '';
+    }
+}
+
 //When DOM is loaded do all this stuff
 window.addEventListener('DOMContentLoaded', function () {
 
@@ -231,7 +321,7 @@ window.addEventListener('DOMContentLoaded', function () {
             break;
         }
     }
-
+  
     //only add event listeners if button is loaded
     if (document.getElementById("rate-pear-button")) {
         document.getElementById("rate-pear-button").addEventListener('click', showRatingModal);
@@ -261,11 +351,23 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("pear-close-button").addEventListener('click', hidePearModal);
     }
 
-    //these elements are always loaded so if statement is not needed
-    document.getElementById("login-button").addEventListener('click', showLoginModal);
-    document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
-    document.getElementById("login-login-button").addEventListener('click', login);
-    document.getElementById("login-close-button").addEventListener('click', hideLoginModal);
+    if(document.getElementById("login-button")) {
+        document.getElementById("login-button").addEventListener('click', showLoginModal);
+        document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
+        document.getElementById("login-login-button").addEventListener('click', login);
+        document.getElementById("login-close-button").addEventListener('click', hideLoginModal);
+
+        document.getElementById("create-account-button").addEventListener('click', showCreateAccountModal);
+        document.getElementById("create-account-cancel-button").addEventListener('click', hideCreateAccountModal);
+        document.getElementById("create-account-confirm-button").addEventListener('click', createAccount);
+        document.getElementById("create-account-close-button").addEventListener('click', hideCreateAccountModal);
+    }
+
+    if(document.getElementById("logout-button")) {
+        document.getElementById("logout-button").addEventListener('click', logout);
+    }
+    
     document.getElementById("navbar-search-button").addEventListener('click', search);
 
+    
 });

@@ -279,6 +279,33 @@ a:focus {
   background-color: red;
 }
 
+/* USER PAGE */
+
+.user-container {
+  margin-left: 10px;
+  display: inline;
+}
+
+.user-line1 {
+  margin-left: 10px;
+}
+
+.user-name {
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  padding: 0;
+  display: inline;
+  font-weight: bolder;
+  font-size: 40px;
+  color: var(--header-green);
+  text-shadow:
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
+}
+
 /* PEAR BUTTON */
 
 #pear-icon {
@@ -326,7 +353,10 @@ a:focus {
   background-color: rgba(0, 0, 0, 0.85);
 }
 
-#create-pear-modal, #login-modal, #rating-modal, #report-modal, #delete-modal{
+
+#create-pear-modal, #login-modal, #rating-modal, #report-modal, #delete-modal,
+#create-account-modal {
+
   position: fixed;
   top: 0;
   bottom: 0;
@@ -375,28 +405,28 @@ a:focus {
   padding: 20px;
 }
 
-.pear-input-element, .login-input-element {
+.modal-input-element {
   display: flex;
   align-items: center;
   font-size: 20px;
   margin: 10px 0;
 }
 
-.pear-input-element label, .login-input-element label {
+.modal-input-element label {
   font-weight: 600;
   flex: 1 75px;
   margin-right: 10px;
 }
 
-.pear-input-element input,
-.pear-input-element textarea, .login-input-element input {
+.modal-input-element input,
+.modal-input-element textarea {
   flex: 6 200px;
   padding: 8px;
   font-size: 20px;
   border: 1px solid #aaa;
 }
 
-.pear-input-element textarea {
+.modal-input-element textarea {
   min-height: 64px;
 }
 
