@@ -64,7 +64,7 @@ a:focus {
   display: inline-block;
 }
 
-#login-button {
+#login-button, #logout-button {
   padding: 8px 10px;
   display: inline-block;
 }
