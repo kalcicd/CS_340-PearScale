@@ -231,7 +231,7 @@ const getPearById = async (id) => {
 const getPearsByUID = async (UID) => {
     const connection = connectDb();
     return await new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM Pears WHERE UID = ?';
+        const sql = 'SELECT * FROM highestRatedPears WHERE UID = ?';
         connection.query(sql, [UID], (err, result) => {
             close(connection);
             if (err) {
