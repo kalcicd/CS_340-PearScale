@@ -302,7 +302,7 @@ const hideTagModal = () => {
 const tagPear = async () => {
     const newTag = {
         PID: window.location.pathname.split('/')[2],
-        tag: document.getElementById("pear-tag-input").value
+        tag: document.getElementById("tag-input").value
     };
     const options = {
         method: 'POST',
