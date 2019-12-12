@@ -7,6 +7,8 @@ First, install dependencies
 npm install
 ```
 
+Copy `src/config-example.js` to `src/config.js` and enter db connection credentials.
+
 You can then start the web application server by running the following command:
 
 ```
