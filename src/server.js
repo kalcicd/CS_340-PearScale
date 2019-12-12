@@ -47,13 +47,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Setup json data handling
 app.use(express.json());
 
-const isLoggedIn = () => {
-    if (req.session.user === null) {
-        return false;
-    }
-    return true;
-}
-
 const authenticate = async (name, pass) => await new Promise(async (resolve, reject) => {
     const user = await getUserByUsername(name).catch((err) => console.log(err));
     if (!user) {
