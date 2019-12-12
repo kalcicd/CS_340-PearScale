@@ -190,18 +190,6 @@ const hideRatingModal = () => {
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
 
-
-const showRatingModal = () => {
-    document.getElementById("rating-modal").classList.remove("hidden");
-    document.getElementById("modal-backdrop").classList.remove("hidden");
-};
-
-const hideRatingModal = () => {
-    document.getElementById("rating-modal").classList.add("hidden");
-    document.getElementById("modal-backdrop").classList.add("hidden");
-};
-
-
 const postRating = async () => {
     const newRating = {
         PID: window.location.pathname.split('/')[2],
