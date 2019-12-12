@@ -189,8 +189,8 @@ const searchPears = async (search) => {
     const connection = connectDb();
     return await new Promise((resolve, reject) => {
         const sanitized = search.toLowerCase();
-        const sql = 
-        `SELECT * FROM (SELECT * FROM highestRatedPears WHERE Title LIKE '%${sanitized}%' 
+        const sql =
+            `SELECT * FROM (SELECT * FROM highestRatedPears WHERE Title LIKE '%${sanitized}%' 
         OR Username LIKE '%${sanitized}%'
         OR Description LIKE '%${sanitized}%'
         OR Average LIKE '%${sanitized}%') as swag`;
@@ -199,7 +199,7 @@ const searchPears = async (search) => {
             if (err) {
                 reject(err);
             } else {
-                console.log(`== Getting Pears with tags containing '${sanitized}'`);
+                console.log(`== Getting Pears with content containing '${sanitized}'`);
                 resolve(result);
             }
         });
@@ -241,6 +241,67 @@ const getPearsByUID = async (UID) => {
             if (err) {
                 reject(err);
             } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
+ * @name getPearTags
+ * @returns {Promise<any>} returns a promise object that resolves with an array of a given pears' tags
+ */
+const getPearTags = async (PID) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM (SELECT * FROM pearTags as swag WHERE ? = swag.PID) as swag2`;
+        connection.query(sql, [PID], (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== Getting tags for pear '${PID}'`);
+                resolve(result);
+            }
+        });
+    });
+};
+
+/**
+ * @name getPearsByTag
+ * @returns {Promise<any>} returns a promise object that resolves with an array of pears with a given tag
+ */
+const getPearsByTag = async (Tag) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM pearTags WHERE ? = Tag`;
+        connection.query(sql, [Tag], (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                console.log('== Getting Pears with tag');
+                resolve(result);
+            }
+        })
+    });
+};
+
+/**
+ * @name tagPear
+ * @returns {Promise<any>} resolves the created account
+ */
+const tagPear = async (tag, PID) => {
+    const connection = connectDb();
+    return await new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Tags (Tag, PID) VALUES (?)';
+        const bindVars = [[tag, PID]];
+        connection.query(sql, bindVars, (err, result) => {
+            close(connection);
+            if (err) {
+                reject(err);
+            } else {
+                console.log(`== row inserted with TID = ${result.insertId}`);
                 resolve(result);
             }
         });
@@ -333,5 +394,8 @@ module.exports = {
     reportPear,
     getPearById,
     getPearsByUID,
+    getPearTags,
+    getPearsByTag,
+    tagPear
 };
 

@@ -18,7 +18,7 @@ const postPear = async () => {
         title: title,
         description: description
     };
-    if(image == '' || title == '') {
+    if (image == '' || title == '') {
         window.alert("Pears need an image link and title");
         return;
     }
@@ -61,7 +61,7 @@ const login = async () => {
         username: username,
         password: password
     };
-    if(username == '' || password == '') {
+    if (username == '' || password == '') {
         window.alert("Please enter all fields");
         return;
     }
@@ -108,11 +108,11 @@ const createAccount = async () => {
     const email = document.getElementById('ca-email-input').value;
     const birthday = document.getElementById('ca-birthday-input').value;
     console.log("===Birthday:" + birthday);
-    if(password != document.getElementById('ca-password-confirm-input').value) {
+    if (password != document.getElementById('ca-password-confirm-input').value) {
         window.alert("Passwords do not match!")
         return;
     }
-    if(username == '' || password == '' || email == '' || birthday == '') {
+    if (username == '' || password == '' || email == '' || birthday == '') {
         window.alert("Please enter all fields");
         return;
     }
@@ -130,15 +130,15 @@ const createAccount = async () => {
         headers: {'Content-Type': 'application/json'}
     };
 
-    const newUser = await(fetch('/createAccount', options).catch((err) => {
+    const newUser = await (fetch('/createAccount', options).catch((err) => {
         console.log(err);
     }));
 
-    if(newUser.status === 201) {
-        const response = await(fetch('/login', options).catch((err) => {
+    if (newUser.status === 201) {
+        const response = await (fetch('/login', options).catch((err) => {
             console.log(err);
         }));
-        if(response.status === 401) {
+        if (response.status === 401) {
             console.log("cant login for some reason. sucks to be you");
         } else {
             window.location.reload();
@@ -174,10 +174,10 @@ const search = async () => {
     const response = await fetch('/', options).catch((err) => {
         console.log(err);
     });
-    if(response) {
+    if (response) {
         document.getElementById("navbar-search-input").value = '';
         window.location.replace(`/?search=${query}`);
-    } 
+    }
 };
 
 const showRatingModal = () => {
@@ -257,10 +257,10 @@ const hideDeleteModal = () => {
 
 const deletePear = async () => {
     let confirmed = false;
-    if (confirm('Are you sure you want to delete this pear? This action cannot be undone')){
-        if (confirm("pls don't go :(")){
-            if (confirm("I don't know if you're thinking this one through all the way.")){
-                if (confirm('Fine then. Be that way.')){
+    if (confirm('Are you sure you want to delete this pear? This action cannot be undone')) {
+        if (confirm("pls don't go :(")) {
+            if (confirm("I don't know if you're thinking this one through all the way.")) {
+                if (confirm('Fine then. Be that way.')) {
                     confirmed = true;
                 }
             }
@@ -288,6 +288,38 @@ const deletePear = async () => {
     hideDeleteModal();
 };
 
+const showTagModal = () => {
+    document.getElementById("tag-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+const hideTagModal = () => {
+    clearInputs();
+    document.getElementById("tag-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
+const tagPear = async () => {
+    const newTag = {
+        PID: window.location.pathname.split('/')[2],
+        tag: document.getElementById("tag-input").value
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(newTag),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/tagPear', options).catch((err) => {
+        console.log(err);
+    });
+    if (response.status === 201) {
+        window.location.reload();
+        hideTagModal();
+    } else {
+        // something went wrong
+    }
+};
+
 
 const clearInputs = () => {
     const inputs = document.getElementsByClassName("modal-input-element");
@@ -303,13 +335,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //set active navlink
     const navlinks = document.getElementsByClassName("navitem navlink");
-    for(ii = 0; ii < navlinks.length; ii++) {
-        if(navlinks[ii].firstChild.pathname === window.location.pathname) {
-            navlinks[ii].classList.value="navitem navlink active";
+    for (ii = 0; ii < navlinks.length; ii++) {
+        if (navlinks[ii].firstChild.pathname === window.location.pathname) {
+            navlinks[ii].classList.value = "navitem navlink active";
             break;
         }
     }
-  
+
     //only add event listeners if button is loaded
     if (document.getElementById("rate-pear-button")) {
         document.getElementById("rate-pear-button").addEventListener('click', showRatingModal);
@@ -339,7 +371,7 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("pear-close-button").addEventListener('click', hidePearModal);
     }
 
-    if(document.getElementById("login-button")) {
+    if (document.getElementById("login-button")) {
         document.getElementById("login-button").addEventListener('click', showLoginModal);
         document.getElementById("login-cancel-button").addEventListener('click', hideLoginModal);
         document.getElementById("login-login-button").addEventListener('click', login);
@@ -351,11 +383,18 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("create-account-close-button").addEventListener('click', hideCreateAccountModal);
     }
 
-    if(document.getElementById("logout-button")) {
+    if (document.getElementById("logout-button")) {
         document.getElementById("logout-button").addEventListener('click', logout);
     }
-    
+
+    if (document.getElementById("tag-pear-button")) {
+        document.getElementById("tag-pear-button").addEventListener('click', showTagModal);
+        document.getElementById("tag-cancel-button").addEventListener('click', hideTagModal);
+        document.getElementById("tag-accept-button").addEventListener('click', tagPear);
+        document.getElementById("tag-close-button").addEventListener('click', hideTagModal);
+    }
+
     document.getElementById("navbar-search-button").addEventListener('click', search);
 
-    
+
 });

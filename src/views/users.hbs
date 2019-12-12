@@ -14,7 +14,7 @@
                 <h2>You haven't posted any pears yet :(</h2>
             {{/unless}}
         {{/if}}
-        
+
         {{#unless selfPage}}
             {{#if pears}}
                 <h2>Pears posted by {{userInfo.Username}}:</h2>
@@ -23,7 +23,7 @@
                 <h2>This user hasn't posted any pears yet :(</h2>
             {{/unless}}
         {{/unless}}
-        
+
         {{#each pears}}
             {{> pear}}
         {{/each}}

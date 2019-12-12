@@ -19,6 +19,9 @@ const {
     getPearsByUID,
     getRatingInfo,
     deletePear,
+    getPearTags,
+    getPearsByTag,
+    tagPear
 } = require('./dao');
 
 const app = express();
@@ -59,11 +62,16 @@ const authenticate = async (name, pass) => await new Promise(async (resolve, rej
 
 app.get('/', async (req, res) => {
     const search = req.query.search;
+    const tag = req.query.tag;
     const sessionUser = req.session.user;
     console.log(sessionUser);
     if (search) {
         console.log(`== Searching ${search} pears`);
         const results = await searchPears(search).catch((err) => console.log(err));
+        res.render('home', {pears: results, sessionUser: sessionUser});
+    } else if (tag) {
+        console.log(`== Searching tag: ${tag}`);
+        const results = await getPearsByTag(tag).catch((err) => console.log(err));
         res.render('home', {pears: results, sessionUser: sessionUser});
     } else {
         console.log('== Got request for the home page');
@@ -175,6 +183,19 @@ app.post('/ratePear', async (req, res) => {
     }
 });
 
+app.post('/tagPear', async (req, res) => {
+    if (!req.session.user) {
+        res.status(401).send('Not logged in');
+    } else {
+        const {tag, PID} = req.body;
+        const result = await tagPear(tag, PID).catch((err) => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+        res.status(201).send(result);
+    }
+});
+
 app.post('/reportPear', async (req, res) => {
     const {PID, description} = req.body;
     const result = await reportPear(PID, description);
@@ -214,6 +235,8 @@ app.post('/logout', async (req, res) => {
 app.get('/pears/:pid(\\d+)', async (req, res) => {
     const PID = req.params.pid;
     const pear = await getPearById(PID).catch((err) => console.log(err));
+    const tags = await getPearTags(PID).catch((err) => console.log(err));
+    console.log(tags);
     if (!pear) {
         res.status(404).redirect('/404');
     } else {
@@ -228,7 +251,13 @@ app.get('/pears/:pid(\\d+)', async (req, res) => {
             isOwnedPear = true;
         }
         // avg rating: ratings.average  num ratings: ratings.numRatings
-        res.status(200).render('pears', {pearInfo: pear, ratings: ratingInfo, ownedPear: isOwnedPear, sessionUser: sessionUser});
+        res.status(200).render('pears', {
+            pearInfo: pear,
+            ratings: ratingInfo,
+            ownedPear: isOwnedPear,
+            sessionUser: sessionUser,
+            tags: tags
+        });
     }
 });
 
@@ -243,10 +272,15 @@ app.get('/users/:username', async (req, res) => {
         let isSelfPage = false;
         if (!sessionUser) {
             isSelfPage = false;
-        } else if (sessionUser.Username === user.Username){
+        } else if (sessionUser.Username === user.Username) {
             isSelfPage = true;
         }
-        res.status(200).render('users', {pears: userPears, userInfo: user, selfPage: isSelfPage, sessionUser: sessionUser});
+        res.status(200).render('users', {
+            pears: userPears,
+            userInfo: user,
+            selfPage: isSelfPage,
+            sessionUser: sessionUser
+        });
     }
 
 
