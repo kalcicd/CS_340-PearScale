@@ -459,6 +459,8 @@ a:focus {
   min-height: 64px;
 }
 
+/* dropbox styling from https://www.filamentgroup.com/lab/select-css.html */
+
 #pear-rating {
 	display: block;
 	font-size: 16px;
