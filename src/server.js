@@ -48,7 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 const isLoggedIn = () => {
-    if(req.session.user === null) {
+    if (req.session.user === null) {
         return false;
     }
     return true;
@@ -258,7 +258,13 @@ app.get('/pears/:pid(\\d+)', async (req, res) => {
             isOwnedPear = true;
         }
         // avg rating: ratings.average  num ratings: ratings.numRatings
-        res.status(200).render('pears', {pearInfo: pear, ratings: ratingInfo, ownedPear: isOwnedPear, sessionUser: sessionUser, tags: tags});
+        res.status(200).render('pears', {
+            pearInfo: pear,
+            ratings: ratingInfo,
+            ownedPear: isOwnedPear,
+            sessionUser: sessionUser,
+            tags: tags
+        });
     }
 });
 
@@ -273,10 +279,15 @@ app.get('/users/:username', async (req, res) => {
         let isSelfPage = false;
         if (!sessionUser) {
             isSelfPage = false;
-        } else if (sessionUser.Username === user.Username){
+        } else if (sessionUser.Username === user.Username) {
             isSelfPage = true;
         }
-        res.status(200).render('users', {pears: userPears, userInfo: user, selfPage: isSelfPage, sessionUser: sessionUser});
+        res.status(200).render('users', {
+            pears: userPears,
+            userInfo: user,
+            selfPage: isSelfPage,
+            sessionUser: sessionUser
+        });
     }
 
 
