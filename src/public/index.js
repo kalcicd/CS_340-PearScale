@@ -93,10 +93,23 @@ const createAccount = () => { // todo: use login() as example of how to do this
 
 };
 
-const search = () => {
+const search = async () => {
     const query = document.getElementById("navbar-search-input").value;
-    document.getElementById("navbar-search-input").value = '';
-    window.location.replace(`/?search=${query}`);
+    const searchInfo = {
+        query: query
+    }
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(searchInfo),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/', options).catch((err) => {
+        console.log(err);
+    });
+    if(response) {
+        document.getElementById("navbar-search-input").value = '';
+        window.location.replace(`/?search=${query}`);
+    } 
 };
 
 const showRatingModal = () => {
