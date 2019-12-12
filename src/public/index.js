@@ -18,6 +18,10 @@ const postPear = async () => {
         title: title,
         description: description
     };
+    if(image == '' || title == '') {
+        window.alert("Pears need an image link and title");
+        return;
+    }
     const options = {
         method: 'POST',
         body: JSON.stringify(newPearAttributes),
@@ -25,13 +29,14 @@ const postPear = async () => {
             'Content-Type': 'application/json'
         }
     };
-    hidePearModal();
     const result = await fetch('/createPear', options).catch((err) => {
         console.log(err);
     });
     if (result.status === 401) {
-        // todo: user not logged in
+        window.alert("You must be logged in to post a pear");
+        return;
     }
+    hidePearModal();
 };
 
 const showLoginModal = () => {
@@ -52,6 +57,10 @@ const login = async () => {
         username: username,
         password: password
     };
+    if(username == '' || password == '') {
+        window.alert("Please enter all fields");
+        return;
+    }
     const options = {
         method: 'POST',
         body: JSON.stringify(userInfo),
@@ -61,7 +70,8 @@ const login = async () => {
         console.log(err);
     });
     if (response.status === 401) {
-        // todo: authentication failed (incorrect username or password)
+        window.alert("Incorrect username or password");
+        return;
     } else {
         window.location.reload();
     }
@@ -95,8 +105,12 @@ const createAccount = async () => {
     const birthday = document.getElementById('ca-birthday-input').value;
     console.log("===Birthday:" + birthday);
     if(password != document.getElementById('ca-password-confirm-input').value) {
-        console.log("passwords do not match");
-        //todo: dont allow this
+        window.alert("Passwords do not match!")
+        return;
+    }
+    if(username == '' || password == '' || email == '' || birthday == '') {
+        window.alert("Please enter all fields");
+        return;
     }
     const userInfo = {
         username: username,
@@ -104,6 +118,7 @@ const createAccount = async () => {
         email: email,
         birthday: birthday
     };
+
 
     const options = {
         method: 'POST',
