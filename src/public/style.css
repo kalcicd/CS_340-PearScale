@@ -64,6 +64,11 @@ a:focus {
   display: inline-block;
 }
 
+#login-button {
+  padding: 8px 10px;
+  display: inline-block;
+}
+
 .navlink.active {
   box-shadow: inset 0 -3px var(--header-green);
 }
@@ -348,8 +353,10 @@ a:focus {
   background-color: rgba(0, 0, 0, 0.85);
 }
 
+
 #create-pear-modal, #login-modal, #rating-modal, #report-modal, #delete-modal,
 #create-account-modal {
+
   position: fixed;
   top: 0;
   bottom: 0;

@@ -20,8 +20,9 @@
 
     <nav class="navbar">
         <ul class="navlist">
-            <li class="navitem navlink active"><a href="/fresh">Fresh</a></li>
+            <li class="navitem navlink"><a href="/fresh">Fresh</a></li>
             <li class="navitem navlink"><a href="/ripe">Ripe</a></li>
+
             {{#if sessionUser}} {{!-- if user is logged in replace login button with a link to user page --}}
                 <li class="navitem navlink" id="account-button"><a href="/users/{{sessionUser.Username}}">{{sessionUser.Username}}</a></li>
                 <li class="navitem navlink" id="logout-button"><a href="#">Logout</a></li>
@@ -29,6 +30,7 @@
             {{#unless sessionUser}}
                 <li class="navitem navlink" id="login-button"><a href="#">Login</a></li>
             {{/unless}}
+
             <li class="navitem navbar-search">
             <input type="text" id="navbar-search-input" placeholder="Find the pearfect pear...">
             <button type="button" id="navbar-search-button"><a href="#"></a><i class="fas fa-search"></i></button>
@@ -53,17 +55,20 @@
         </div>
 
         <div class="modal-body">
+
             <div class="modal-input-element">
                 <label for="username-input">Username</label>
                 <input type="text" id="username-input">
             </div>
             <div class="modal-input-element">
+
                 <label for="password-input">Password</label>
                 <input type="password" id="password-input">
             </div>
         </div>
 
         <div class="modal-footer">
+
             <button type="button" class="modal-accept-button" id="create-account-button">Create Account</button>
             <button type="button" class="modal-cancel-button" id="login-cancel-button">Cancel</button>
             <button type="button" class="modal-accept-button" id="login-login-button">Login</button>

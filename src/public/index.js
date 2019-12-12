@@ -29,14 +29,18 @@ const postPear = async () => {
             'Content-Type': 'application/json'
         }
     };
+
+
     const result = await fetch('/createPear', options).catch((err) => {
         console.log(err);
     });
     if (result.status === 401) {
+
         window.alert("You must be logged in to post a pear");
         return;
     }
     hidePearModal();
+
 };
 
 const showLoginModal = () => {
@@ -123,9 +127,7 @@ const createAccount = async () => {
     const options = {
         method: 'POST',
         body: JSON.stringify(userInfo),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: {'Content-Type': 'application/json'}
     };
 
     const newUser = await(fetch('/createAccount', options).catch((err) => {
@@ -151,18 +153,31 @@ const showCreateAccountModal = () => {
     document.getElementById("modal-backdrop").classList.remove("hidden");
 };
 
+
 const hideCreateAccountModal = () => {
     clearInputs();
     document.getElementById("create-account-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
 
+const search = async () => {
 
-
-const search = () => {
     const query = document.getElementById("navbar-search-input").value;
-    document.getElementById("navbar-search-input").value = '';
-    window.location.replace(`/?search=${query}`);
+    const searchInfo = {
+        query: query
+    }
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(searchInfo),
+        headers: {'Content-Type': 'application/json'}
+    };
+    const response = await fetch('/', options).catch((err) => {
+        console.log(err);
+    });
+    if(response) {
+        document.getElementById("navbar-search-input").value = '';
+        window.location.replace(`/?search=${query}`);
+    } 
 };
 
 const showRatingModal = () => {
@@ -174,6 +189,18 @@ const hideRatingModal = () => {
     document.getElementById("rating-modal").classList.add("hidden");
     document.getElementById("modal-backdrop").classList.add("hidden");
 };
+
+
+const showRatingModal = () => {
+    document.getElementById("rating-modal").classList.remove("hidden");
+    document.getElementById("modal-backdrop").classList.remove("hidden");
+};
+
+const hideRatingModal = () => {
+    document.getElementById("rating-modal").classList.add("hidden");
+    document.getElementById("modal-backdrop").classList.add("hidden");
+};
+
 
 const postRating = async () => {
     const newRating = {
@@ -273,6 +300,7 @@ const deletePear = async () => {
     hideDeleteModal();
 };
 
+
 const clearInputs = () => {
     const inputs = document.getElementsByClassName("modal-input-element");
 
@@ -282,8 +310,18 @@ const clearInputs = () => {
     }
 }
 
+//When DOM is loaded do all this stuff
 window.addEventListener('DOMContentLoaded', function () {
 
+    //set active navlink
+    const navlinks = document.getElementsByClassName("navitem navlink");
+    for(ii = 0; ii < navlinks.length; ii++) {
+        if(navlinks[ii].firstChild.pathname === window.location.pathname) {
+            navlinks[ii].classList.value="navitem navlink active";
+            break;
+        }
+    }
+  
     //only add event listeners if button is loaded
     if (document.getElementById("rate-pear-button")) {
         document.getElementById("rate-pear-button").addEventListener('click', showRatingModal);
@@ -332,5 +370,4 @@ window.addEventListener('DOMContentLoaded', function () {
     document.getElementById("navbar-search-button").addEventListener('click', search);
 
     
-
 });

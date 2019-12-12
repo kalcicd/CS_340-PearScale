@@ -85,9 +85,11 @@ app.get('/fresh', async (req, res) => {
         console.log(err);
         res.status(500).end();
     });
+
     const sessionUser = req.session.user;
-    console.log(sessionUser);
+
     res.render('home', {pears: freshPears, sessionUser: sessionUser});
+
 });
 
 app.get('/ripe', async (req, res) => {
@@ -97,7 +99,6 @@ app.get('/ripe', async (req, res) => {
         res.status(500).end();
     });
     const sessionUser = req.session.user;
-    console.log(sessionUser);
     res.status(200).render('home', {pears: ripePears, sessionUser: sessionUser});
 });
 
